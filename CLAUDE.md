@@ -4,7 +4,7 @@
 
 An interactive React web app that guides paleontologists and evolutionary biologists through setting up PyRate analyses. It lives as a `.jsx` artifact renderable inside Claude.ai (users with Claude Pro can open it directly), but could also be deployed as a standalone React app.
 
-PyRate is a Bayesian framework for estimating speciation, extinction, and preservation rates from fossil occurrence data. It has dozens of flags, multiple model types, and many silent failure modes. This wizard replaces 60 pages of expert notes with a step-by-step decision tree that builds the exact terminal command users need.
+PyRate is a Bayesian framework for estimating speciation, extinction, and preservation rates from fossil occurrence data. It has dozens of flags, multiple model types, and many silent failure modes. This wizard replaces 111 pages of my notes with a step-by-step decision tree that builds the exact terminal command users need.
 
 ## Architecture
 
@@ -93,7 +93,7 @@ These are silent failures — PyRate gives no error but produces wrong results:
 ## Code Style & Comments
 
 ### Comment Philosophy
-Use short, navigational comments that help a human find specific sections quickly. Think of them as signposts, not explanations. The person maintaining this code is not a developer — they need to find "where is the question about preservation?" or "where do I change the BDNN explanation text?" without reading code logic.
+Use short, navigational comments that help a human find specific sections quickly. Think of them as signposts, not explanations. The person maintaining this code is not a developer — they need to find "where is the question about preservation?" or "where do I change the BDNN explanation text?" without reading code logic, so that they can insert changes exactly where they are visually needed in the UI.
 
 **Do this:**
 ```jsx

@@ -479,12 +479,6 @@ const TREE = {
   }
 };
 
-// ─── FONTS ────────────────────────────────────────────────────────────────
-const fl = document.createElement("link");
-fl.href = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap";
-fl.rel = "stylesheet";
-document.head.appendChild(fl);
-
 // ─── DEEP DIVE CHAT ──────────────────────────────────────────────────────
 function Chat({ topic, allTags, choices }) {
   const [msgs, setMsgs] = useState([]);
