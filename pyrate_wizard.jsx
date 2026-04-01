@@ -51,6 +51,45 @@ const KB = {
     title: "Computing Cluster Submission",
     plain: `Submit jobs to run in the background. A job array runs all your replicates simultaneously — one job per replicate.`,
     technical: `SLURM sbatch --array=1-N. $SLURM_ARRAY_TASK_ID → -j flag. BDNN needs more mem/time. PyRateContinuous: 100K-1M iterations sufficient.`
+  },
+
+  // -- KB: Installation
+  installation: {
+    title: "Installing PyRate",
+    plain: `PyRate is a Python program, so you need Python 3.10 or higher on your machine before anything else. A virtual environment is just a dedicated folder where PyRate's files will live, separated from everything else on your computer. After creating it, you install PyRate's dependencies (extra Python tools it needs) and you're ready to run analyses.`,
+    technical: `# Check Python version (need 3.10+)
+python --version
+# (try python3 --version if the above gives an error)
+
+# ─── Create virtual environment ───
+# Mac/Linux:
+python -m venv ~/pyrate_env
+source ~/pyrate_env/bin/activate
+# Windows:
+py -m venv C:\\pyrate_env
+.\\C:\\pyrate_env\\Scripts\\activate
+# (pyrate_env) in your prompt = environment is active
+
+# ─── Install dependencies ───
+python -m ensurepip --upgrade
+python -m pip install --upgrade pip
+python -m pip install -r your_path/PyRate-master/requirements.txt
+
+# ─── Test ───
+python your_path/PyRate-master/PyRate.py -v
+# "Module FastPyRateC was not found" = fine, PyRate still works
+
+# ─── Windows only: PATH setup ───
+# Add to PATH environment variables:
+#   C:\\...\\Python\\Python312
+#   C:\\...\\Python\\Python312\\Scripts
+#   C:\\Program Files\\R\\R-4.4.1\\bin  (for plots)
+
+# ─── FastPyRateC (optional speed library) ───
+# Mac:   brew install swig && brew install curl
+# Linux: sudo apt-get install swig && sudo apt-get install curl
+cd your_path/PyRate-master/pyrate_lib/fastPyRateC/ModulePyrateC
+bash install.sh   # automated install (Mac/Linux)`
   }
 };
 
@@ -65,6 +104,7 @@ const TREE = {
       { label: "My data is ready — I need help choosing models and building the command to run", next: "goal", tags: [], icon: "🔬" },
       { label: "My analysis finished running — I need to process and visualize results", next: "postprocess_what", tags: ["postprocess"], icon: "📊" },
       { label: "I need to create a job submission script for our computing cluster", next: "slurm_what", tags: ["slurm"], icon: "🖥️" },
+      { label: "I am a complete newbie — I need to start from scratch by downloading and installing the program on my computer", next: "install_os", tags: ["install"], icon: "🔧" },
     ]
   },
   data_source: {
@@ -466,6 +506,50 @@ const TREE = {
       { label: "BDNN neural network (needs more memory and time)", next: "generate", tags: ["slurm_bdnn"], icon: "🧠" },
       { label: "Environmental correlation (PyRateContinuous)", next: "generate", tags: ["slurm_continuous"], icon: "🌡️" },
       { label: "Biogeographic analysis (DES)", next: "generate", tags: ["slurm_des"], icon: "🗺️" },
+    ]
+  },
+
+  // ── INSTALLATION ──
+  install_os: {
+    id: "install_os", topic: "installation",
+    question: "Let's get PyRate installed on your computer!",
+    subtitle: "You don't need to know how to code — we'll go step by step. First things first: what kind of computer are you using?",
+    explain: `PyRate runs through a program called Python — think of it as the engine that powers PyRate. You don't need to learn Python at all; it just needs to be installed on your machine. To check if you already have it, open a Terminal (on Mac: press Command+Space and search "Terminal"; on Windows: press the Windows key and search "Command Prompt"). Once it's open, type python --version and press Enter. If you see something like "Python 3.11.2", you're set! If nothing comes up, or the number is below 3.10, head to python.org and download the latest version before continuing here.`,
+    options: [
+      { label: "I'm on a Mac or Linux", next: "install_mac", tags: ["install_mac"], icon: "🍎" },
+      { label: "I'm on Windows", next: "install_windows", tags: ["install_windows"], icon: "🪟" },
+    ]
+  },
+  install_mac: {
+    id: "install_mac", topic: "installation",
+    question: "Mac/Linux: four steps to get PyRate running.",
+    subtitle: "Keep your Terminal open and follow along. The exact commands to copy-paste are in the technical details panel below.",
+    explain: `First, we'll create a virtual environment — just a dedicated folder where PyRate's files will live, cleanly separated from the rest of your computer. In your Terminal, type: python -m venv ~/pyrate_env (if you get an error, try python3 instead of python — it depends on how Python was installed on your machine). Next, activate it: source ~/pyrate_env/bin/activate. You'll see (pyrate_env) appear at the start of your terminal line — that means it's working. Now, download PyRate from its GitHub page: click the green "Code" button and choose "Download ZIP." Unzip the folder somewhere easy to find — your Desktop is fine — and you'll get a folder called PyRate-master. Back in your terminal, install PyRate's dependencies (extra tools it needs to run — think of them like plug-ins) with three commands in order: python -m ensurepip --upgrade, then python -m pip install --upgrade pip, then python -m pip install -r your_path/PyRate-master/requirements.txt, replacing your_path with wherever you actually put the PyRate-master folder. Finally, test that everything worked: python your_path/PyRate-master/PyRate.py -v. If you see a version number, you're all set! If you see "Module FastPyRateC was not found" — don't worry, that's normal, and PyRate works perfectly fine without it. It's just an optional speed library.`,
+    options: [
+      { label: "It worked — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
+      { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
+      { label: "I also want to install the optional FastPyRateC speed library", next: "install_fastc", tags: ["fastc"], icon: "⚡" },
+    ]
+  },
+  install_windows: {
+    id: "install_windows", topic: "installation",
+    question: "Windows: four steps to get PyRate running.",
+    subtitle: "Keep your Command Prompt open and follow along. The exact commands to copy-paste are in the technical details panel below.",
+    explain: `First, we'll create a virtual environment — a dedicated folder where PyRate's files will live, away from everything else. In your Command Prompt, type: py -m venv C:\\pyrate_env (on Windows we use py instead of python). Next, activate it: .\\C:\\pyrate_env\\Scripts\\activate. You'll see (pyrate_env) appear at the start of your prompt — that means it's on. Now, download PyRate from its GitHub page: click the green "Code" button and choose "Download ZIP." Unzip the folder somewhere easy to find — your Desktop is fine — and you'll get a folder called PyRate-master. Back in your Command Prompt, install PyRate's dependencies (extra tools it needs — think of them like plug-ins) with three commands in order: py -m ensurepip --upgrade, then py -m pip install --upgrade pip, then py -m pip install -r your_path\\PyRate-master\\requirements.txt (using backslashes and replacing your_path with your actual folder location). Test it: py your_path\\PyRate-master\\PyRate.py -v. If you see a version number, PyRate is installed — but Windows needs one extra step. You'll need to add Python to your PATH, which is the list your computer checks when looking for programs. Open your system settings, search for "Edit environment variables," and add your Python folder (something like C:\\Python\\Python312) and its Scripts subfolder to the PATH list. You'll also want to add your R installation's bin folder (like C:\\Program Files\\R\\R-4.4.1\\bin) if you plan on making any plots. The technical details below show exactly what to add.`,
+    options: [
+      { label: "All done — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
+      { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
+      { label: "I also want to install the optional FastPyRateC speed library", next: "install_fastc", tags: ["fastc"], icon: "⚡" },
+    ]
+  },
+  install_fastc: {
+    id: "install_fastc", topic: "installation",
+    question: "Installing the FastPyRateC speed library (optional).",
+    subtitle: "This is not required — PyRate runs fine without it. But if you plan on running many analyses, it's worth the extra setup.",
+    explain: `FastPyRateC is a small add-on written in a faster programming language (C++) that speeds up some of PyRate's internal calculations. Installing it requires a couple of extra tools first. On Mac, open your Terminal and run brew install swig and brew install curl (if you don't have Homebrew installed, go to brew.sh first). On Linux, use sudo apt-get install swig and sudo apt-get install curl. Once those are installed, navigate into the ModulePyrateC folder inside your PyRate directory by typing: cd your_path/PyRate-master/pyrate_lib/fastPyRateC/ModulePyrateC (replace your_path with your actual folder). Then run: bash install.sh. This script downloads and compiles everything automatically — it needs an internet connection and may take a few minutes. When it's done, run PyRate.py -v again and the "FastPyRateC not found" message should be gone. Windows installation is more involved; see the technical details below for the manual steps.`,
+    options: [
+      { label: "Done — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
+      { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
     ]
   },
 
