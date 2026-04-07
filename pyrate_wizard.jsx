@@ -100,11 +100,11 @@ const TREE = {
     question: "Where are you in the process?",
     subtitle: "Let's figure out what you need to do next.",
     options: [
+      { label: "I am a complete newbie — I need to start from scratch by downloading and installing the program on my computer", next: "install_os", tags: ["install"], icon: "🔧" },
       { label: "I'm just getting started — I need to prepare my fossil occurrence data", next: "data_source", tags: ["data_prep"], icon: "📂" },
       { label: "My data is ready — I need help choosing models and building the command to run", next: "goal", tags: [], icon: "🔬" },
       { label: "My analysis finished running — I need to process and visualize results", next: "postprocess_what", tags: ["postprocess"], icon: "📊" },
       { label: "I need to create a job submission script for our computing cluster", next: "slurm_what", tags: ["slurm"], icon: "🖥️" },
-      { label: "I am a complete newbie — I need to start from scratch by downloading and installing the program on my computer", next: "install_os", tags: ["install"], icon: "🔧" },
     ]
   },
   data_source: {
@@ -514,7 +514,7 @@ const TREE = {
     id: "install_os", topic: "installation",
     question: "Let's get PyRate installed on your computer!",
     subtitle: "You don't need to know how to code — we'll go step by step. First things first: what kind of computer are you using?",
-    explain: `PyRate runs through a program called Python — think of it as the engine that powers PyRate. You don't need to learn Python at all; it just needs to be installed on your machine. To check if you already have it, open a Terminal (on Mac: press Command+Space and search "Terminal"; on Windows: press the Windows key and search "Command Prompt"). Once it's open, type python --version and press Enter. If you see something like "Python 3.11.2", you're set! If nothing comes up, or the number is below 3.10, head to python.org and download the latest version before continuing here.`,
+    explain: `PyRate runs using the programming language Python. You don't need to learn Python at all; it just needs to be installed on your machine. \nTo check if you already have it, open a Terminal window: \n• On Mac: press Command+Space and search "Terminal"\n• Windows: press the Windows key and search "Command Prompt"). \n\nOnce it's open, type "python --version" and press Enter. \nIf you see something like "Python 3.11.2", you're set! \nIf nothing comes up, or the number is below 3.10, head to python.org and download the latest version of Python before continuing here.`,
     options: [
       { label: "I'm on a Mac or Linux", next: "install_mac", tags: ["install_mac"], icon: "🍎" },
       { label: "I'm on Windows", next: "install_windows", tags: ["install_windows"], icon: "🪟" },
@@ -524,7 +524,7 @@ const TREE = {
     id: "install_mac", topic: "installation",
     question: "Mac/Linux: four steps to get PyRate running.",
     subtitle: "Keep your Terminal open and follow along. The exact commands to copy-paste are in the technical details panel below.",
-    explain: `First, we'll create a virtual environment — just a dedicated folder where PyRate's files will live, cleanly separated from the rest of your computer. In your Terminal, type: python -m venv ~/pyrate_env (if you get an error, try python3 instead of python — it depends on how Python was installed on your machine). Next, activate it: source ~/pyrate_env/bin/activate. You'll see (pyrate_env) appear at the start of your terminal line — that means it's working. Now, download PyRate from its GitHub page: click the green "Code" button and choose "Download ZIP." Unzip the folder somewhere easy to find — your Desktop is fine — and you'll get a folder called PyRate-master. Back in your terminal, install PyRate's dependencies (extra tools it needs to run — think of them like plug-ins) with three commands in order: python -m ensurepip --upgrade, then python -m pip install --upgrade pip, then python -m pip install -r your_path/PyRate-master/requirements.txt, replacing your_path with wherever you actually put the PyRate-master folder. Finally, test that everything worked: python your_path/PyRate-master/PyRate.py -v. If you see a version number, you're all set! If you see "Module FastPyRateC was not found" — don't worry, that's normal, and PyRate works perfectly fine without it. It's just an optional speed library.`,
+    explain: `Step 1 — Create a virtual environment\nThis is just a dedicated folder where PyRate's files will live, cleanly separated from the rest of your computer. In your Terminal, type:\n\n• python -m venv ~/pyrate_env\n\nIf you get an error, try python3 instead of python — it depends on how Python was installed on your machine.\n\nStep 2 — Activate it\nRun this command:\n\n• source ~/pyrate_env/bin/activate\n\nYou'll see (pyrate_env) appear at the start of your terminal line — that means it's working.\n\nStep 3 — Download and install PyRate\nGo to PyRate's GitHub page, click the green "Code" button, and choose "Download ZIP." Unzip the folder somewhere easy to find — your Desktop is fine — and you'll get a folder called PyRate-master.\n\nBack in your terminal, install PyRate's dependencies (extra tools it needs to run — think of them like plug-ins) with three commands in order:\n\n• python -m ensurepip --upgrade\n• python -m pip install --upgrade pip\n• python -m pip install -r your_path/PyRate-master/requirements.txt\n\nReplace your_path with wherever you actually put the PyRate-master folder.\n\nStep 4 — Test it\nRun this command:\n\n• python your_path/PyRate-master/PyRate.py -v\n\nIf you see a version number, you're all set!\n\nIf you see "Module FastPyRateC was not found" — don't worry, that's normal. PyRate works perfectly fine without it. It's just an optional speed library.`,
     options: [
       { label: "It worked — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
       { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
@@ -563,12 +563,72 @@ const TREE = {
   }
 };
 
+// ─── API KEY SETUP PANEL ──────────────────────────────────────────────────
+function ApiKeySetup({ onSave, onCancel }) {
+  const [draft, setDraft] = useState("");
+  const [err, setErr] = useState("");
+
+  const save = () => {
+    const k = draft.trim();
+    if (!k.startsWith("sk-ant-")) { setErr("Keys start with sk-ant- — check for typos or extra spaces."); return; }
+    localStorage.setItem("pyrate_api_key", k);
+    onSave(k);
+  };
+
+  return (
+    <div style={{ border: "1px solid rgba(120,90,60,0.2)", borderRadius: 12, background: "rgba(12,10,8,0.8)", padding: "20px 22px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+        <span style={{ fontWeight: 600, fontSize: 14, color: "#c8baa4", fontFamily: "'Source Serif 4',Georgia,serif" }}>Connect to Claude AI</span>
+        {onCancel && <button onClick={onCancel} style={{ background: "none", border: "none", color: "#5a4e3a", cursor: "pointer", fontSize: 15 }}>✕</button>}
+      </div>
+
+      {/* -- What is an API key */}
+      <div style={{ fontSize: 13, lineHeight: 1.7, color: "#907a60", marginBottom: 16 }}>
+        <p style={{ margin: "0 0 10px" }}>An <strong style={{ color: "#a89878" }}>API key</strong> lets this tool talk to Claude AI so you can ask follow-up questions in plain English. Without one, you can still use all the built-in explanations and generate commands — the AI chat is optional.</p>
+        <p style={{ margin: 0 }}>Your key is stored only in your browser and never sent anywhere except Anthropic's servers.</p>
+      </div>
+
+      {/* -- Cost info */}
+      <div style={{ padding: "10px 14px", borderRadius: 9, background: "rgba(120,90,60,0.04)", border: "1px solid rgba(120,90,60,0.1)", marginBottom: 16, fontSize: 12.5, color: "#7a6e58", lineHeight: 1.6 }}>
+        <div style={{ fontWeight: 600, color: "#907a60", marginBottom: 4 }}>Cost</div>
+        Pay-as-you-go — no subscription needed. Typical questions here cost <strong style={{ color: "#a89878" }}>less than $0.01 each</strong> (roughly $3 per million words sent to Claude, $15 per million words back). A full session of 20 questions would cost around $0.10–0.30.
+      </div>
+
+      {/* -- How to get a key */}
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ fontWeight: 600, fontSize: 12, color: "#907a60", marginBottom: 8, textTransform: "uppercase", letterSpacing: ".05em" }}>How to get a key</div>
+        <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: "#7a6e58", lineHeight: 1.9 }}>
+          <li>Go to <strong style={{ color: "#a89878" }}>console.anthropic.com</strong> and create a free account</li>
+          <li>Click <strong style={{ color: "#a89878" }}>API Keys</strong> in the left sidebar</li>
+          <li>Click <strong style={{ color: "#a89878" }}>Create Key</strong>, give it any name</li>
+          <li>Copy the key (it starts with <code style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5, color: "#8a9898" }}>sk-ant-</code>) and paste it below</li>
+          <li>Add a credit card to activate the key</li>
+        </ol>
+      </div>
+
+      {/* -- Key input */}
+      <div style={{ display: "flex", gap: 8 }}>
+        <input
+          value={draft}
+          onChange={e => { setDraft(e.target.value); setErr(""); }}
+          onKeyDown={e => e.key === "Enter" && save()}
+          placeholder="sk-ant-api03-..."
+          style={{ flex: 1, background: "rgba(120,90,60,0.05)", border: `1px solid ${err ? "rgba(180,80,60,0.4)" : "rgba(120,90,60,0.2)"}`, borderRadius: 8, padding: "9px 12px", color: "#c0b098", fontSize: 13, fontFamily: "'JetBrains Mono',monospace", outline: "none" }}
+        />
+        <button onClick={save} style={{ background: "rgba(120,90,60,0.15)", border: "1px solid rgba(120,90,60,0.25)", borderRadius: 8, padding: "9px 16px", color: "#b09070", cursor: "pointer", fontSize: 13, whiteSpace: "nowrap" }}>Save key</button>
+      </div>
+      {err && <div style={{ marginTop: 7, fontSize: 12, color: "rgba(200,100,80,0.8)" }}>{err}</div>}
+    </div>
+  );
+}
+
 // ─── DEEP DIVE CHAT ──────────────────────────────────────────────────────
-function Chat({ topic, allTags, choices }) {
+function Chat({ topic, allTags, choices, apiKey, setApiKey }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showKeySetup, setShowKeySetup] = useState(false);
   const td = KB[topic];
 
   const ask = async () => {
@@ -580,7 +640,7 @@ function Chat({ topic, allTags, choices }) {
     try {
       const ctx = choices.length > 0 ? `\nUser's path: ${choices.map(c => c.choice).join(" → ")}` : "";
       const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514", max_tokens: 1000,
           system: `You are an expert PyRate assistant for biologists and paleontologists who are new to the software. Explain in evolutionary biology terms first, then give technical PyRate details. Warn about pitfalls. Under 250 words.\n\nKNOWLEDGE:\n${td?.plain || ""}\n${td?.technical || ""}${ctx}`,
@@ -588,26 +648,46 @@ function Chat({ topic, allTags, choices }) {
         })
       });
       const d = await r.json();
-      setMsgs(p => [...p, { role: "assistant", text: d.content?.map(b => b.text || "").join("") || "Sorry, couldn't generate a response." }]);
+      if (d.error) {
+        const msg = d.error.type === "authentication_error"
+          ? "Invalid API key. Click the 🔑 icon above to update it."
+          : `API error: ${d.error.message}`;
+        setMsgs(p => [...p, { role: "assistant", text: msg }]);
+      } else {
+        setMsgs(p => [...p, { role: "assistant", text: d.content?.map(b => b.text || "").join("") || "Sorry, couldn't generate a response." }]);
+      }
     } catch {
-      setMsgs(p => [...p, { role: "assistant", text: "Couldn't connect to Claude API. You can still use the built-in explanations at each step." }]);
+      setMsgs(p => [...p, { role: "assistant", text: "Couldn't connect to the API. Check your internet connection or try again." }]);
     }
     setLoading(false);
   };
 
+  // -- Collapsed button
   if (!open) return (
-    <button onClick={() => setOpen(true)} style={{
+    <button onClick={() => { setOpen(true); if (!apiKey) setShowKeySetup(true); }} style={{
       background: "none", border: "1px solid rgba(120,90,60,0.15)", borderRadius: 10,
       padding: "10px 18px", color: "#806a50", cursor: "pointer", fontSize: 13,
       fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: 8, width: "100%", justifyContent: "center"
-    }}>💬 Have a question? Ask Claude for more detail (requires API key)</button>
+    }}>💬 Have a question? Ask Claude for more detail</button>
   );
 
+  // -- Key setup screen
+  if (showKeySetup) return (
+    <ApiKeySetup
+      onSave={k => { setApiKey(k); setShowKeySetup(false); }}
+      onCancel={() => { setOpen(false); setShowKeySetup(false); }}
+    />
+  );
+
+  // -- Chat panel
   return (
     <div style={{ border: "1px solid rgba(120,90,60,0.15)", borderRadius: 12, overflow: "hidden", background: "rgba(12,10,8,0.6)" }}>
       <div style={{ padding: "10px 16px", background: "rgba(120,90,60,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(120,90,60,0.08)" }}>
         <span style={{ fontSize: 13, color: "#907a60", fontFamily: "'DM Sans',sans-serif" }}>💬 Ask Claude</span>
-        <button onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#5a4e3a", cursor: "pointer", fontSize: 15 }}>✕</button>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <button onClick={() => setShowKeySetup(true)} title="Change API key" style={{ background: "none", border: "none", color: "#5a4e3a", cursor: "pointer", fontSize: 12 }}>🔑</button>
+          <button onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#5a4e3a", cursor: "pointer", fontSize: 15 }}>✕</button>
+        </div>
       </div>
       <div style={{ maxHeight: 220, overflowY: "auto", padding: 14 }}>
         {msgs.length === 0 && <p style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic", margin: 0 }}>Ask anything — "why does this matter?" or "what if I have lots of singletons?"</p>}
@@ -625,7 +705,7 @@ function Chat({ topic, allTags, choices }) {
 }
 
 // ─── COMMAND BUILDER ──────────────────────────────────────────────────────
-function CmdBuilder({ tags, choices }) {
+function CmdBuilder({ tags, choices, apiKey }) {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -633,8 +713,9 @@ function CmdBuilder({ tags, choices }) {
     setLoading(true);
     // Try API first, fall back to deterministic
     try {
+      if (!apiKey) throw new Error("no key");
       const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514", max_tokens: 1500,
           system: `You are a PyRate command builder. Generate EXACT terminal commands with # comments explaining each flag in plain English. Use placeholder paths like path/to/your_file.py.
@@ -818,6 +899,7 @@ export default function PyRateWizard() {
   const [tags, setTags] = useState([]);
   const [choices, setChoices] = useState([]);
   const [showTech, setShowTech] = useState(false);
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem("pyrate_api_key") || "");
 
   const node = TREE[cur];
   const td = KB[node.topic];
@@ -874,7 +956,7 @@ export default function PyRateWizard() {
         </div>
       )}
       {/* Content */}
-      <div style={{ padding: "26px 24px 44px", maxWidth: 660, margin: "0 auto", animation: "fu .3s ease" }} key={cur}>
+      <div style={{ padding: "26px 24px 44px", maxWidth: 660, margin: "0 auto", animation: "fu .3s ease", whiteSpace: "pre-line" }} key={cur}>
         <h2 style={{ fontSize: 20, fontWeight: 600, margin: "0 0 5px", color: "#ddd0c0", lineHeight: 1.35, fontFamily: "'Source Serif 4',Georgia,serif" }}>{node.question}</h2>
         {node.subtitle && <p style={{ fontSize: 13.5, color: "#7a6e58", margin: "0 0 18px", lineHeight: 1.55 }}>{node.subtitle}</p>}
         {/* Explanation */}
@@ -897,9 +979,9 @@ export default function PyRateWizard() {
           </div>
         )}
         {/* Chat */}
-        <div style={{ marginBottom: 22 }}><Chat topic={node.topic} allTags={tags} choices={choices} /></div>
+        <div style={{ marginBottom: 22 }}><Chat topic={node.topic} allTags={tags} choices={choices} apiKey={apiKey} setApiKey={setApiKey} /></div>
         {/* Options or Builder */}
-        {node.terminal ? <CmdBuilder tags={tags} choices={choices} /> : (
+        {node.terminal ? <CmdBuilder tags={tags} choices={choices} apiKey={apiKey} /> : (
           <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
             {node.options.map((o, i) => (
               <button key={i} className="ob" onClick={() => pick(o)} style={{
