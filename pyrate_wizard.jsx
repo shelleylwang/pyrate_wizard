@@ -514,7 +514,23 @@ const TREE = {
     id: "install_os", topic: "installation",
     question: "Let's get PyRate installed on your computer!",
     subtitle: "You don't need to know how to code — we'll go step by step. First things first: what kind of computer are you using?",
-    explain: `PyRate runs using the programming language Python. You don't need to learn Python at all; it just needs to be installed on your machine. \nTo check if you already have it, open a Terminal window: \n• On Mac: press Command+Space and search "Terminal"\n• Windows: press the Windows key and search "Command Prompt"). \n\nOnce it's open, type "python --version" and press Enter. \nIf you see something like "Python 3.11.2", you're set! \nIf nothing comes up, or the number is below 3.10, head to python.org and download the latest version of Python before continuing here.`,
+    explain: `PyRate runs using Python — you don't need to learn Python at all, it just needs to be on your machine.
+
+## Check if you already have it
+
+Open a **Terminal** window:
+- **Mac:** press \`Command+Space\`, search "Terminal," press Enter
+- **Windows:** press the Windows key, search "Command Prompt," press Enter
+
+Once it's open, type the following and press Enter:
+
+\`\`\`
+python --version
+\`\`\`
+
+If you see something like \`Python 3.11.2\`, you're all set. If nothing comes up, or the version number is below 3.10, visit [python.org](https://www.python.org/downloads/) and download the latest version before continuing.
+
+If \`python\` gives an error, try \`python3 --version\` instead — the command name varies by installation.`,
     options: [
       { label: "I'm on a Mac or Linux", next: "install_mac", tags: ["install_mac"], icon: "🍎" },
       { label: "I'm on Windows", next: "install_windows", tags: ["install_windows"], icon: "🪟" },
@@ -524,7 +540,47 @@ const TREE = {
     id: "install_mac", topic: "installation",
     question: "Mac/Linux: four steps to get PyRate running.",
     subtitle: "Keep your Terminal open and follow along. The exact commands to copy-paste are in the technical details panel below.",
-    explain: `Step 1 — Create a virtual environment\nThis is just a dedicated folder where PyRate's files will live, cleanly separated from the rest of your computer. In your Terminal, type:\n\n• python -m venv ~/pyrate_env\n\nIf you get an error, try python3 instead of python — it depends on how Python was installed on your machine.\n\nStep 2 — Activate it\nRun this command:\n\n• source ~/pyrate_env/bin/activate\n\nYou'll see (pyrate_env) appear at the start of your terminal line — that means it's working.\n\nStep 3 — Download and install PyRate\nGo to PyRate's GitHub page, click the green "Code" button, and choose "Download ZIP." Unzip the folder somewhere easy to find — your Desktop is fine — and you'll get a folder called PyRate-master.\n\nBack in your terminal, install PyRate's dependencies (extra tools it needs to run — think of them like plug-ins) with three commands in order:\n\n• python -m ensurepip --upgrade\n• python -m pip install --upgrade pip\n• python -m pip install -r your_path/PyRate-master/requirements.txt\n\nReplace your_path with wherever you actually put the PyRate-master folder.\n\nStep 4 — Test it\nRun this command:\n\n• python your_path/PyRate-master/PyRate.py -v\n\nIf you see a version number, you're all set!\n\nIf you see "Module FastPyRateC was not found" — don't worry, that's normal. PyRate works perfectly fine without it. It's just an optional speed library.`,
+    explain: `Keep your Terminal open and follow along — each step has the exact command to copy-paste.
+
+## Step 1 — Create a virtual environment
+
+A virtual environment is a dedicated folder where PyRate's files will live, cleanly separated from everything else on your computer.
+
+\`\`\`
+python -m venv ~/pyrate_env
+\`\`\`
+
+If you get an error, try \`python3\` instead of \`python\` — it depends on how Python was installed.
+
+## Step 2 — Activate it
+
+\`\`\`
+source ~/pyrate_env/bin/activate
+\`\`\`
+
+You'll see \`(pyrate_env)\` appear at the start of your terminal line — that means it's active.
+
+## Step 3 — Download and install PyRate
+
+Go to [PyRate's GitHub page](https://github.com/macroevolution/pyrate), click the green **Code** button, and choose **Download ZIP**. Unzip it somewhere easy to find — your Desktop is fine. You'll get a folder called \`PyRate-master\`.
+
+Back in Terminal, install PyRate's dependencies with these three commands in order:
+
+\`\`\`
+python -m ensurepip --upgrade
+python -m pip install --upgrade pip
+python -m pip install -r your_path/PyRate-master/requirements.txt
+\`\`\`
+
+Replace \`your_path\` with the actual location of your \`PyRate-master\` folder.
+
+## Step 4 — Test it
+
+\`\`\`
+python your_path/PyRate-master/PyRate.py -v
+\`\`\`
+
+If you see a version number, you're all set. If you see **"Module FastPyRateC was not found"** — don't worry, that's normal. PyRate works fine without it; it's an optional speed library you can install separately.`,
     options: [
       { label: "It worked — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
       { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
@@ -535,7 +591,54 @@ const TREE = {
     id: "install_windows", topic: "installation",
     question: "Windows: four steps to get PyRate running.",
     subtitle: "Keep your Command Prompt open and follow along. The exact commands to copy-paste are in the technical details panel below.",
-    explain: `First, we'll create a virtual environment — a dedicated folder where PyRate's files will live, away from everything else. In your Command Prompt, type: py -m venv C:\\pyrate_env (on Windows we use py instead of python). Next, activate it: .\\C:\\pyrate_env\\Scripts\\activate. You'll see (pyrate_env) appear at the start of your prompt — that means it's on. Now, download PyRate from its GitHub page: click the green "Code" button and choose "Download ZIP." Unzip the folder somewhere easy to find — your Desktop is fine — and you'll get a folder called PyRate-master. Back in your Command Prompt, install PyRate's dependencies (extra tools it needs — think of them like plug-ins) with three commands in order: py -m ensurepip --upgrade, then py -m pip install --upgrade pip, then py -m pip install -r your_path\\PyRate-master\\requirements.txt (using backslashes and replacing your_path with your actual folder location). Test it: py your_path\\PyRate-master\\PyRate.py -v. If you see a version number, PyRate is installed — but Windows needs one extra step. You'll need to add Python to your PATH, which is the list your computer checks when looking for programs. Open your system settings, search for "Edit environment variables," and add your Python folder (something like C:\\Python\\Python312) and its Scripts subfolder to the PATH list. You'll also want to add your R installation's bin folder (like C:\\Program Files\\R\\R-4.4.1\\bin) if you plan on making any plots. The technical details below show exactly what to add.`,
+    explain: `Keep your Command Prompt open and follow along. On Windows, use \`py\` instead of \`python\`.
+
+## Step 1 — Create a virtual environment
+
+A virtual environment is a dedicated folder where PyRate's files will live, away from everything else.
+
+\`\`\`
+py -m venv C:\\pyrate_env
+\`\`\`
+
+## Step 2 — Activate it
+
+\`\`\`
+C:\\pyrate_env\\Scripts\\activate
+\`\`\`
+
+You'll see \`(pyrate_env)\` appear at the start of your prompt — that means it's active.
+
+## Step 3 — Download and install PyRate
+
+Go to [PyRate's GitHub page](https://github.com/macroevolution/pyrate), click the green **Code** button, and choose **Download ZIP**. Unzip it somewhere easy to find — your Desktop is fine. You'll get a folder called \`PyRate-master\`.
+
+Back in Command Prompt, install PyRate's dependencies with these three commands in order. Use backslashes in the path:
+
+\`\`\`
+py -m ensurepip --upgrade
+py -m pip install --upgrade pip
+py -m pip install -r your_path\\PyRate-master\\requirements.txt
+\`\`\`
+
+Replace \`your_path\` with the actual location of your \`PyRate-master\` folder.
+
+## Step 4 — Test it
+
+\`\`\`
+py your_path\\PyRate-master\\PyRate.py -v
+\`\`\`
+
+If you see a version number, PyRate is installed.
+
+## Step 5 — Add Python to your PATH
+
+Windows needs one extra step so it can find Python. Open **System Settings**, search for **"Edit environment variables,"** and add these two entries to PATH:
+
+- Your Python folder — something like \`C:\\Python\\Python312\`
+- Its Scripts subfolder — \`C:\\Python\\Python312\\Scripts\`
+
+If you plan on making plots, also add your R \`bin\` folder, e.g. \`C:\\Program Files\\R\\R-4.4.1\\bin\`.`,
     options: [
       { label: "All done — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
       { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
@@ -545,8 +648,39 @@ const TREE = {
   install_fastc: {
     id: "install_fastc", topic: "installation",
     question: "Installing the FastPyRateC speed library (optional).",
-    subtitle: "This is not required — PyRate runs fine without it. But if you plan on running many analyses, it's worth the extra setup.",
-    explain: `FastPyRateC is a small add-on written in a faster programming language (C++) that speeds up some of PyRate's internal calculations. Installing it requires a couple of extra tools first. On Mac, open your Terminal and run brew install swig and brew install curl (if you don't have Homebrew installed, go to brew.sh first). On Linux, use sudo apt-get install swig and sudo apt-get install curl. Once those are installed, navigate into the ModulePyrateC folder inside your PyRate directory by typing: cd your_path/PyRate-master/pyrate_lib/fastPyRateC/ModulePyrateC (replace your_path with your actual folder). Then run: bash install.sh. This script downloads and compiles everything automatically — it needs an internet connection and may take a few minutes. When it's done, run PyRate.py -v again and the "FastPyRateC not found" message should be gone. Windows installation is more involved; see the technical details below for the manual steps.`,
+    subtitle: "This is not required — PyRate runs without it. But if you plan on running many analyses, it's worth the extra setup.",
+    explain: `FastPyRateC is an optional add-on written in C++ that speeds up some of PyRate's calculations. PyRate works fine without it, but it's worth installing if you plan to run many analyses.
+
+## Mac / Linux
+
+First, install two required tools.
+
+**On Mac** — you need [Homebrew](https://brew.sh) installed first, then:
+
+\`\`\`
+brew install swig
+brew install curl
+\`\`\`
+
+**On Linux** instead:
+
+\`\`\`
+sudo apt-get install swig
+sudo apt-get install curl
+\`\`\`
+
+Then navigate into the FastPyRateC folder and run the installer:
+
+\`\`\`
+cd your_path/PyRate-master/pyrate_lib/fastPyRateC/ModulePyrateC
+bash install.sh
+\`\`\`
+
+This needs an internet connection and may take a few minutes. When done, run \`PyRate.py -v\` again — the "FastPyRateC not found" message should be gone.
+
+## Windows
+
+Windows installation requires manually compiling the C++ module. See the **technical details** panel below for the exact steps.`,
     options: [
       { label: "Done — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
       { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
@@ -562,6 +696,65 @@ const TREE = {
     options: []
   }
 };
+
+// ─── MARKDOWN RENDERER ───────────────────────────────────────────────────
+function MiniMarkdown({ children }) {
+  if (!children) return null;
+
+  const parseInline = (text, prefix) => {
+    const parts = [];
+    let s = text, k = 0;
+    const patterns = [
+      { re: /`([^`]+)`/, render: m => <code key={prefix + k++}>{m[1]}</code> },
+      { re: /\*\*([^*]+)\*\*/, render: m => <strong key={prefix + k++}>{m[1]}</strong> },
+      { re: /\[([^\]]+)\]\(([^)]+)\)/, render: m => <a key={prefix + k++} href={m[2]} target="_blank" rel="noopener noreferrer">{m[1]}</a> },
+    ];
+    while (s.length > 0) {
+      let best = null, bestIdx = s.length;
+      for (const p of patterns) {
+        const m = p.re.exec(s);
+        if (m && m.index < bestIdx) { best = { m, render: p.render }; bestIdx = m.index; }
+      }
+      if (!best) { parts.push(s); break; }
+      if (bestIdx > 0) parts.push(s.slice(0, bestIdx));
+      parts.push(best.render(best.m));
+      s = s.slice(bestIdx + best.m[0].length);
+    }
+    return parts;
+  };
+
+  const blocks = [];
+  const lines = children.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (line.trim().startsWith('```')) {
+      const fence = [];
+      i++;
+      while (i < lines.length && !lines[i].trim().startsWith('```')) { fence.push(lines[i]); i++; }
+      i++;
+      blocks.push(<pre key={i}><code>{fence.join('\n')}</code></pre>);
+    } else if (line.startsWith('### ')) {
+      blocks.push(<h3 key={i}>{parseInline(line.slice(4), `h${i}`)}</h3>); i++;
+    } else if (line.startsWith('## ')) {
+      blocks.push(<h2 key={i}>{parseInline(line.slice(3), `h${i}`)}</h2>); i++;
+    } else if (line.startsWith('- ') || line.startsWith('* ')) {
+      const items = [];
+      while (i < lines.length && (lines[i].startsWith('- ') || lines[i].startsWith('* '))) { items.push(lines[i].slice(2)); i++; }
+      blocks.push(<ul key={i}>{items.map((it, j) => <li key={j}>{parseInline(it, `li${i}${j}`)}</li>)}</ul>);
+    } else if (line.trim() === '') {
+      i++;
+    } else {
+      const para = [];
+      while (i < lines.length && lines[i].trim() !== '' && !lines[i].startsWith('## ') && !lines[i].startsWith('### ') && !lines[i].startsWith('- ') && !lines[i].startsWith('* ') && !lines[i].trim().startsWith('```')) {
+        para.push(lines[i]); i++;
+      }
+      if (para.length > 0) blocks.push(<p key={i}>{parseInline(para.join(' '), `p${i}`)}</p>);
+    }
+  }
+
+  return <div className="explain-md">{blocks}</div>;
+}
 
 // ─── API KEY SETUP PANEL ──────────────────────────────────────────────────
 function ApiKeySetup({ onSave, onCancel }) {
@@ -930,6 +1123,17 @@ export default function PyRateWizard() {
         .ob:hover{background:rgba(120,90,60,0.1)!important;border-color:rgba(120,90,60,0.35)!important}
         .ob{transition:all .2s ease!important}
         ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(120,90,60,0.18);border-radius:3px}
+        .explain-md p{margin:0 0 9px;line-height:1.7}
+        .explain-md h2{font-family:'Source Serif 4',Georgia,serif;font-size:14px;font-weight:600;color:#c8baa4;margin:14px 0 5px;letter-spacing:-0.01em}
+        .explain-md h3{font-family:'Source Serif 4',Georgia,serif;font-size:13px;font-weight:600;color:#b8a894;margin:12px 0 4px}
+        .explain-md ul{padding-left:18px;margin:4px 0 10px}
+        .explain-md li{margin-bottom:4px;line-height:1.65}
+        .explain-md code{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#7a98a8;background:rgba(70,90,110,0.14);padding:1px 5px;border-radius:4px}
+        .explain-md pre{background:rgba(8,7,5,0.85);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:8px 0 12px;border-left:3px solid rgba(70,90,110,0.25)}
+        .explain-md pre code{background:none;padding:0;color:#a8bccc;font-size:12px;line-height:1.65}
+        .explain-md a{color:#8a98a8;text-decoration:underline;text-decoration-color:rgba(138,152,168,0.4)}
+        .explain-md a:hover{color:#a8bccc}
+        .explain-md strong{color:#c0b098;font-weight:600}
       `}</style>
       {/* Header */}
       <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid rgba(120,90,60,0.08)", background: "rgba(20,17,14,0.95)" }}>
@@ -956,7 +1160,7 @@ export default function PyRateWizard() {
         </div>
       )}
       {/* Content */}
-      <div style={{ padding: "26px 24px 44px", maxWidth: 660, margin: "0 auto", animation: "fu .3s ease", whiteSpace: "pre-line" }} key={cur}>
+      <div style={{ padding: "26px 24px 44px", maxWidth: 660, margin: "0 auto", animation: "fu .3s ease" }} key={cur}>
         <h2 style={{ fontSize: 20, fontWeight: 600, margin: "0 0 5px", color: "#ddd0c0", lineHeight: 1.35, fontFamily: "'Source Serif 4',Georgia,serif" }}>{node.question}</h2>
         {node.subtitle && <p style={{ fontSize: 13.5, color: "#7a6e58", margin: "0 0 18px", lineHeight: 1.55 }}>{node.subtitle}</p>}
         {/* Explanation */}
@@ -966,7 +1170,7 @@ export default function PyRateWizard() {
               <span style={{ fontSize: 13 }}>💡</span>
               <span style={{ fontWeight: 600, fontSize: 11, color: "#907a60", textTransform: "uppercase", letterSpacing: ".05em" }}>What you should know</span>
             </div>
-            {node.explain}
+            <MiniMarkdown>{node.explain}</MiniMarkdown>
           </div>
         )}
         {/* Tech toggle */}
