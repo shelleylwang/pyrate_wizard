@@ -1,3 +1,40 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node
 node_modules/
 dist/
-.DS_Store
+.env
+.env.local
+
+# Large files
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.dmg
+*.iso
+*.bin
+*.exe
+*.pkg
+
+# Large data/media
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.flac
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

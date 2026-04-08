@@ -562,7 +562,7 @@ You'll see \`(pyrate_env)\` appear at the start of your terminal line — that m
 
 ## Step 3 — Download and install PyRate
 
-Go to [PyRate's GitHub page](https://github.com/macroevolution/pyrate), click the green **Code** button, and choose **Download ZIP**. Unzip it somewhere easy to find — your Desktop is fine. You'll get a folder called \`PyRate-master\`.
+Go to [PyRate's GitHub page](https://github.com/dsilvestro/PyRate), click the green **Code** button, and choose **Download ZIP**. This downloads the repo to your local machine (computer). On your computer, go to your Downloads folder. Unzip the downloaded file somewhere easy to find. You'll get a folder called \`PyRate-master\`.
 
 Back in Terminal, install PyRate's dependencies with these three commands in order:
 
@@ -611,7 +611,7 @@ You'll see \`(pyrate_env)\` appear at the start of your prompt — that means it
 
 ## Step 3 — Download and install PyRate
 
-Go to [PyRate's GitHub page](https://github.com/macroevolution/pyrate), click the green **Code** button, and choose **Download ZIP**. Unzip it somewhere easy to find — your Desktop is fine. You'll get a folder called \`PyRate-master\`.
+Go to [PyRate's GitHub page](https://github.com/dsilvestro/PyRate), click the green **Code** button, and choose **Download ZIP**. Unzip it somewhere easy to find — your Desktop is fine. You'll get a folder called \`PyRate-master\`.
 
 Back in Command Prompt, install PyRate's dependencies with these three commands in order. Use backslashes in the path:
 
@@ -822,22 +822,49 @@ function Chat({ topic, allTags, choices, apiKey, setApiKey }) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [showKeySetup, setShowKeySetup] = useState(false);
-  const td = KB[topic];
+  const [notes, setNotes] = useState(null);
+  const [notesLoading, setNotesLoading] = useState(false);
+
+  // -- Load notes from static files once when chat opens
+  useEffect(() => {
+    if (!open || notes || notesLoading) return;
+    setNotesLoading(true);
+    Promise.all([
+      fetch("notes_tutorials.html").then(r => r.text()),
+      fetch("notes_concepts.html").then(r => r.text())
+    ])
+      .then(([t, c]) => { setNotes(t + "\n\n" + c); setNotesLoading(false); })
+      .catch(() => { setNotes(""); setNotesLoading(false); });
+  }, [open]);
 
   const ask = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || notesLoading) return;
     const q = input.trim();
     setInput("");
-    setMsgs(p => [...p, { role: "user", text: q }]);
+    const updatedMsgs = [...msgs, { role: "user", text: q }];
+    setMsgs(updatedMsgs);
     setLoading(true);
     try {
-      const ctx = choices.length > 0 ? `\nUser's path: ${choices.map(c => c.choice).join(" → ")}` : "";
+      const ctx = choices.length > 0 ? `\nThe user's current path through the wizard: ${choices.map(c => c.choice).join(" → ")}` : "";
+      const systemText = `You are an expert PyRate assistant for biologists and paleontologists. Answer questions based on the notes below, which are the authoritative source. Explain in evolutionary biology terms first, then give technical PyRate details. Warn about silent failure modes and pitfalls. Be concise but complete.
+
+Formatting note: bold and headings indicate structure and emphasis. Color hints in the HTML are mostly accurate but may be inconsistent — ground your understanding in the text content itself.${ctx}
+
+PYRATE NOTES:
+${notes || ""}`;
       const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST", headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "anthropic-beta": "prompt-caching-2024-07-31",
+          "anthropic-dangerous-direct-browser-access": "true"
+        },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514", max_tokens: 1000,
-          system: `You are an expert PyRate assistant for biologists and paleontologists who are new to the software. Explain in evolutionary biology terms first, then give technical PyRate details. Warn about pitfalls. Under 250 words.\n\nKNOWLEDGE:\n${td?.plain || ""}\n${td?.technical || ""}${ctx}`,
-          messages: [{ role: "user", content: q }]
+          system: [{ type: "text", text: systemText, cache_control: { type: "ephemeral" } }],
+          messages: updatedMsgs.map(m => ({ role: m.role, content: m.text }))
         })
       });
       const d = await r.json();
@@ -887,11 +914,12 @@ function Chat({ topic, allTags, choices, apiKey, setApiKey }) {
         {msgs.map((m, i) => (
           <div key={i} style={{ marginBottom: 10, padding: "10px 14px", borderRadius: 10, background: m.role === "user" ? "rgba(120,90,60,0.08)" : "rgba(80,100,120,0.06)", fontSize: 13, lineHeight: 1.6, color: "#c0b098", borderLeft: m.role === "assistant" ? "3px solid rgba(100,120,140,0.25)" : "none" }}>{m.text}</div>
         ))}
+        {notesLoading && <div style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic" }}>Loading notes...</div>}
         {loading && <div style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic" }}>Thinking...</div>}
       </div>
       <div style={{ display: "flex", gap: 8, padding: "8px 12px", borderTop: "1px solid rgba(120,90,60,0.08)" }}>
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && ask()} placeholder="Type your question..." style={{ flex: 1, background: "rgba(120,90,60,0.05)", border: "1px solid rgba(120,90,60,0.12)", borderRadius: 8, padding: "8px 12px", color: "#c0b098", fontSize: 13, fontFamily: "'DM Sans',sans-serif", outline: "none" }} />
-        <button onClick={ask} disabled={loading} style={{ background: "rgba(120,90,60,0.12)", border: "1px solid rgba(120,90,60,0.2)", borderRadius: 8, padding: "8px 14px", color: "#907a60", cursor: "pointer", fontSize: 13 }}>Send</button>
+        <button onClick={ask} disabled={loading || notesLoading} style={{ background: "rgba(120,90,60,0.12)", border: "1px solid rgba(120,90,60,0.2)", borderRadius: 8, padding: "8px 14px", color: "#907a60", cursor: "pointer", fontSize: 13 }}>Send</button>
       </div>
     </div>
   );
