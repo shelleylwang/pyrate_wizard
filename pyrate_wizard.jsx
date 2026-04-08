@@ -858,12 +858,11 @@ ${notes || ""}`;
           "Content-Type": "application/json",
           "x-api-key": apiKey,
           "anthropic-version": "2023-06-01",
-          "anthropic-beta": "prompt-caching-2024-07-31",
           "anthropic-dangerous-direct-browser-access": "true"
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514", max_tokens: 1000,
-          system: [{ type: "text", text: systemText, cache_control: { type: "ephemeral" } }],
+          model: "claude-sonnet-4-6", max_tokens: 1000,
+          system: systemText,
           messages: updatedMsgs.map(m => ({ role: m.role, content: m.text }))
         })
       });
@@ -938,7 +937,7 @@ function CmdBuilder({ tags, choices, apiKey }) {
       const r = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST", headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514", max_tokens: 1500,
+          model: "claude-sonnet-4-6", max_tokens: 1500,
           system: `You are a PyRate command builder. Generate EXACT terminal commands with # comments explaining each flag in plain English. Use placeholder paths like path/to/your_file.py.
 
 CRITICAL RULES:
