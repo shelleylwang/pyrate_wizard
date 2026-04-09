@@ -115,8 +115,10 @@ const TREE = {
     options: [
       { label: "I downloaded occurrence data from the Paleobiology Database (PBDB)", next: "data_extant", tags: ["pbdb"], icon: "🌐" },
       { label: "I have my own spreadsheet with species, status (extant/extinct), and age ranges", next: "data_extant", tags: ["manual"], icon: "📝" },
-      { label: "My fossils are grouped by excavation site, and I want ages randomized by site rather than individually", next: "data_extant", tags: ["site_data"], icon: "🗺️",
-        hint: "Fossils from the same site will all get the same randomly sampled age" },
+      {
+        label: "My fossils are grouped by excavation site, and I want ages randomized by site rather than individually", next: "data_extant", tags: ["site_data"], icon: "🗺️",
+        hint: "Fossils from the same site will all get the same randomly sampled age"
+      },
     ]
   },
   data_extant: {
@@ -146,18 +148,30 @@ const TREE = {
     subtitle: "Different research questions need different types of models. Pick the one closest to what you want to learn.",
     explain: `PyRate has several kinds of analyses depending on your question. The most common is simply asking "how did speciation and extinction rates change over time?" But you can also ask "did temperature drive these rate changes?" or "did larger-bodied species go extinct faster?" There are also specialized models for biogeography (how species moved between regions) and even neural networks for detecting complex patterns.`,
     options: [
-      { label: "How did the rate of new species appearing and going extinct change over geological time?", next: "pres_explain", tags: ["standard_div"], icon: "📈",
-        hint: "The most common analysis — produces rates-through-time curves showing diversification dynamics" },
-      { label: "Did changes in climate or environment (temperature, sea level, etc.) drive my group's diversification?", next: "env_prereq", tags: ["env_correlate"], icon: "🌡️",
-        hint: "Tests whether speciation or extinction rates correlate with an environmental variable over time" },
-      { label: "How did species in my group spread between two geographic regions, and what drove local extinctions?", next: "des_input", tags: ["des"], icon: "🗺️",
-        hint: "Biogeographic model estimating dispersal and area-specific extinction rates" },
-      { label: "Did a measurable species trait (body size, tooth shape, etc.) affect how fast species appeared or disappeared?", next: "trait_type", tags: ["trait_analysis"], icon: "🦴",
-        hint: "Tests whether a trait correlates with speciation, extinction, or both" },
-      { label: "I have multiple predictors (traits + environment) and want to find complex patterns using a neural network", next: "bdnn_explain", tags: ["bdnn"], icon: "🧠",
-        hint: "Most advanced approach — detects non-linear patterns that simpler models miss" },
-      { label: "Did species become more or less likely to go extinct as they got older? (age-dependent extinction)", next: "ade_explain", tags: ["ade"], icon: "⏳",
-        hint: "Tests whether extinction risk changes with a lineage's age" },
+      {
+        label: "How did the rate of new species appearing and going extinct change over geological time?", next: "pres_explain", tags: ["standard_div"], icon: "📈",
+        hint: "The most common analysis — produces rates-through-time curves showing diversification dynamics"
+      },
+      {
+        label: "Did changes in climate or environment (temperature, sea level, etc.) drive my group's diversification?", next: "env_prereq", tags: ["env_correlate"], icon: "🌡️",
+        hint: "Tests whether speciation or extinction rates correlate with an environmental variable over time"
+      },
+      {
+        label: "How did species in my group spread between two geographic regions, and what drove local extinctions?", next: "des_input", tags: ["des"], icon: "🗺️",
+        hint: "Biogeographic model estimating dispersal and area-specific extinction rates"
+      },
+      {
+        label: "Did a measurable species trait (body size, tooth shape, etc.) affect how fast species appeared or disappeared?", next: "trait_type", tags: ["trait_analysis"], icon: "🦴",
+        hint: "Tests whether a trait correlates with speciation, extinction, or both"
+      },
+      {
+        label: "I have multiple predictors (traits + environment) and want to find complex patterns using a neural network", next: "bdnn_explain", tags: ["bdnn"], icon: "🧠",
+        hint: "Most advanced approach — detects non-linear patterns that simpler models miss"
+      },
+      {
+        label: "Did species become more or less likely to go extinct as they got older? (age-dependent extinction)", next: "ade_explain", tags: ["ade"], icon: "⏳",
+        hint: "Tests whether extinction risk changes with a lineage's age"
+      },
     ]
   },
   pres_explain: {
@@ -166,14 +180,22 @@ const TREE = {
     subtitle: "Not every species that lived left behind fossils. If we don't account for this, we might mistake poor fossil preservation for low diversity. PyRate explicitly models this bias.",
     explain: `Think of it this way: if a time period has very few fossils, is that because few species existed then, or because conditions weren't good for making fossils? PyRate separates these two possibilities by modeling the preservation process. The question here is about how you think fossilization worked for your particular group of organisms.`,
     options: [
-      { label: "I'm not sure which model is best — run a statistical test to compare the options", next: "pres_gamma", tags: ["ppmodeltest"], icon: "🔍",
-        hint: "Recommended if you're unsure! Uses a maximum likelihood test to pick the best-fitting preservation model" },
-      { label: "Preservation probably changed smoothly over each lineage's lifetime — higher in the middle, lower at the start and end", next: "pres_gamma", tags: ["nhpp"], icon: "〰️",
-        hint: "The default model — works well for most datasets. No extra settings needed" },
-      { label: "Preservation was roughly the same at all times — one constant rate", next: "pres_gamma", tags: ["hpp"], icon: "➖",
-        hint: "The simplest model — only one parameter to estimate" },
-      { label: "Preservation shifted at specific time boundaries (like geological stages or mass extinction events)", next: "pres_epochs", tags: ["tpp"], icon: "📊",
-        hint: "You provide the time boundaries, and each interval gets its own estimated preservation rate" },
+      {
+        label: "I'm not sure which model is best — run a statistical test to compare the options", next: "pres_gamma", tags: ["ppmodeltest"], icon: "🔍",
+        hint: "Recommended if you're unsure! Uses a maximum likelihood test to pick the best-fitting preservation model"
+      },
+      {
+        label: "Preservation probably changed smoothly over each lineage's lifetime — higher in the middle, lower at the start and end", next: "pres_gamma", tags: ["nhpp"], icon: "〰️",
+        hint: "The default model — works well for most datasets. No extra settings needed"
+      },
+      {
+        label: "Preservation was roughly the same at all times — one constant rate", next: "pres_gamma", tags: ["hpp"], icon: "➖",
+        hint: "The simplest model — only one parameter to estimate"
+      },
+      {
+        label: "Preservation shifted at specific time boundaries (like geological stages or mass extinction events)", next: "pres_epochs", tags: ["tpp"], icon: "📊",
+        hint: "You provide the time boundaries, and each interval gets its own estimated preservation rate"
+      },
     ]
   },
   pres_epochs: {
@@ -191,10 +213,14 @@ const TREE = {
     subtitle: "For example, species with hard shells fossilize much more easily than soft-bodied species. This option lets each lineage have its own preservation rate.",
     explain: `Without this option, PyRate assumes every species in your group had equal chances of being preserved. That's often unrealistic — marine organisms preserve better than terrestrial ones, large species better than small, etc. Turning this on adds lineage-specific variation from a statistical distribution, but it only costs ONE extra parameter, so it barely increases computational complexity. The developers recommend including it in almost all analyses.`,
     options: [
-      { label: "Yes — different lineages probably had different preservation potential (recommended for most datasets)", next: "bd_approach", tags: ["gamma"], icon: "✓",
-        hint: "Adds minimal computational cost — only 1 extra parameter" },
-      { label: "No — all species in my group had similar preservation potential", next: "bd_approach", tags: [], icon: "➖",
-        hint: "Appropriate if your group is ecologically uniform (e.g., all marine bivalves)" },
+      {
+        label: "Yes — different lineages probably had different preservation potential (recommended for most datasets)", next: "bd_approach", tags: ["gamma"], icon: "✓",
+        hint: "Adds minimal computational cost — only 1 extra parameter"
+      },
+      {
+        label: "No — all species in my group had similar preservation potential", next: "bd_approach", tags: [], icon: "➖",
+        hint: "Appropriate if your group is ecologically uniform (e.g., all marine bivalves)"
+      },
     ]
   },
   bd_approach: {
@@ -203,12 +229,18 @@ const TREE = {
     subtitle: "This is the most important modeling decision. It determines how PyRate identifies when your group's diversification sped up or slowed down.",
     explain: `There are two philosophies here. The first, more common approach lets the statistical algorithm explore different numbers of rate changes and their timing — it's objective and data-driven. The second approach is where YOU specify when rates might have shifted based on your knowledge of geological events (e.g., "test for a shift at the K-Pg boundary"). The first approach is recommended unless you have strong prior hypotheses about specific events driving your group's evolution.`,
     options: [
-      { label: "Let the model figure out when and how many rate changes occurred — I want it to be data-driven", next: "dataset_size", tags: ["rjmcmc"], icon: "🤖",
-        hint: "The recommended default. Uses an algorithm called RJMCMC that explores different numbers and timings of rate shifts" },
-      { label: "I want to test for rate shifts at specific times I choose (e.g., at mass extinction boundaries or climate events)", next: "fixshift_warning", tags: ["fixshift"], icon: "📌",
-        hint: "You provide a file with the times — the model estimates rate values between those fixed points" },
-      { label: "I expect rates were roughly constant — just estimate one overall speciation rate and one extinction rate", next: "dataset_size", tags: ["constant_rates"], icon: "➖",
-        hint: "Appropriate for groups with short time spans, few species, or if you want a baseline comparison" },
+      {
+        label: "Let the model figure out when and how many rate changes occurred — I want it to be data-driven", next: "dataset_size", tags: ["rjmcmc"], icon: "🤖",
+        hint: "The recommended default. Uses an algorithm called RJMCMC that explores different numbers and timings of rate shifts"
+      },
+      {
+        label: "I want to test for rate shifts at specific times I choose (e.g., at mass extinction boundaries or climate events)", next: "fixshift_warning", tags: ["fixshift"], icon: "📌",
+        hint: "You provide a file with the times — the model estimates rate values between those fixed points"
+      },
+      {
+        label: "I expect rates were roughly constant — just estimate one overall speciation rate and one extinction rate", next: "dataset_size", tags: ["constant_rates"], icon: "➖",
+        hint: "Appropriate for groups with short time spans, few species, or if you want a baseline comparison"
+      },
     ]
   },
   fixshift_warning: {
@@ -218,8 +250,10 @@ const TREE = {
     explain: `When you provide a file with fixed rate shift times, PyRate silently switches from the automatic algorithm to basic parameter estimation. It will ONLY estimate rates between YOUR specified time points — it won't search for any additional shifts you might have missed. If you want to set outer time boundaries (where your data starts and ends) but still let the model search freely for rate changes within those boundaries, there's a better option called "edge corrections."`,
     options: [
       { label: "That's fine — I have strong geological justification for my specific shift times", next: "dataset_size", tags: ["fixshift_confirmed"], icon: "✓" },
-      { label: "Actually, I just want to set the outer time boundaries and let the model search freely within them", next: "edge_explain", tags: ["edgeshift"], icon: "🔄",
-        hint: "Edge corrections: define where your sampling window starts/ends, then automatic detection runs inside" },
+      {
+        label: "Actually, I just want to set the outer time boundaries and let the model search freely within them", next: "edge_explain", tags: ["edgeshift"], icon: "🔄",
+        hint: "Edge corrections: define where your sampling window starts/ends, then automatic detection runs inside"
+      },
       { label: "Let me go back and use the automatic approach instead", next: "bd_approach", tags: [], icon: "←" },
     ]
   },
@@ -285,8 +319,10 @@ const TREE = {
     options: [
       { label: "Did my group's own species richness regulate its diversification? (self-regulation / carrying capacity)", next: "dd_shape", tags: ["dd"], icon: "🔁" },
       { label: "Did a single environmental variable (paleotemperature, sea level, etc.) drive rates?", next: "env_shape", tags: ["env_single"], icon: "🌡️" },
-      { label: "I want to test multiple environmental predictors at once", next: "mbd_prior", tags: ["mbd"], icon: "📊",
-        hint: "Automatically identifies which predictors are statistically supported" },
+      {
+        label: "I want to test multiple environmental predictors at once", next: "mbd_prior", tags: ["mbd"], icon: "📊",
+        hint: "Automatically identifies which predictors are statistically supported"
+      },
     ]
   },
   dd_shape: {
@@ -384,8 +420,10 @@ const TREE = {
     subtitle: "This determines the size of the neural network. Too complex for few predictors = overfitting. Too simple for many = missing real patterns.",
     explain: `The neural network has layers of processing units ("nodes"). The default is 2 layers with 18 and 8 nodes — suitable for moderate numbers of predictors. If you only have 1-3 predictors, you MUST shrink the network, but here's a critical gotcha: when you shrink the network, the algorithm normally updates 10% of connections per step. With only 4 connections, 10% rounds down to ZERO — meaning nothing gets updated and the model can't learn! You must also increase the update percentage. This is one of the most common mistakes with BDNN.`,
     options: [
-      { label: "1–3 predictors — use a smaller network (critical: update settings must also change!)", next: "generate", tags: ["bdnn_small_net"], icon: "🔹",
-        hint: "Will use a smaller network with increased update frequency — both changes are required" },
+      {
+        label: "1–3 predictors — use a smaller network (critical: update settings must also change!)", next: "generate", tags: ["bdnn_small_net"], icon: "🔹",
+        hint: "Will use a smaller network with increased update frequency — both changes are required"
+      },
       { label: "4–8 predictors — the default network should work well", next: "generate", tags: ["bdnn_default_net"], icon: "🔶" },
       { label: "9+ predictors — may need a larger network", next: "generate", tags: ["bdnn_large_net"], icon: "🔷" },
     ]
@@ -400,8 +438,10 @@ const TREE = {
     options: [
       { label: "I'm using time-binned preservation — set up ADE", next: "generate", tags: ["ade_tpp"], icon: "📊" },
       { label: "I'm using constant preservation — set up ADE", next: "generate", tags: ["ade_hpp"], icon: "➖" },
-      { label: "I chose the smooth default preservation — I'd need to switch models", next: "pres_explain", tags: ["ade_switch"], icon: "🔄",
-        hint: "ADE requires either constant or time-binned preservation — not the smooth default" },
+      {
+        label: "I chose the smooth default preservation — I'd need to switch models", next: "pres_explain", tags: ["ade_switch"], icon: "🔄",
+        hint: "ADE requires either constant or time-binned preservation — not the smooth default"
+      },
     ]
   },
 
@@ -421,10 +461,14 @@ const TREE = {
     question: "What's your main biogeographic question?",
     explain: `All DES models estimate: dispersal rates between areas (A→B and B→A, which can differ), extinction rates in each area, and preservation rates in each area. The difference is whether these rates are constant, change over time, or depend on some predictor. You should almost always include lineage-specific preservation variation — it barely increases computation but improves rate estimates.`,
     options: [
-      { label: "How did dispersal and extinction rates change over geological time?", next: "des_extras", tags: ["des_skyline"], icon: "📈",
-        hint: "Time-varying rates with shifts at time boundaries you specify" },
-      { label: "Did an environmental variable (climate, land bridges, etc.) drive dispersal or extinction?", next: "des_extras", tags: ["des_covar"], icon: "🌡️",
-        hint: "⚠️ Cannot be combined with the time-varying option above — the covariate captures the time variation" },
+      {
+        label: "How did dispersal and extinction rates change over geological time?", next: "des_extras", tags: ["des_skyline"], icon: "📈",
+        hint: "Time-varying rates with shifts at time boundaries you specify"
+      },
+      {
+        label: "Did an environmental variable (climate, land bridges, etc.) drive dispersal or extinction?", next: "des_extras", tags: ["des_covar"], icon: "🌡️",
+        hint: "⚠️ Cannot be combined with the time-varying option above — the covariate captures the time variation"
+      },
       { label: "Did the number of species already in an area affect dispersal into or extinction within it?", next: "des_extras", tags: ["des_divd"], icon: "🔁" },
       { label: "Just estimate constant rates between the two areas", next: "des_extras", tags: ["des_constant"], icon: "➖" },
     ]
@@ -446,10 +490,14 @@ const TREE = {
     options: [
       { label: "Combine results from multiple replicate runs into one", next: "combine_which", tags: ["combine"], icon: "🔗" },
       { label: "Make rates-through-time plots (speciation and extinction over geological time)", next: "rtt_which", tags: ["rtt"], icon: "📈" },
-      { label: "Check which number of rate shifts has the best statistical support", next: "generate", tags: ["mprob"], icon: "📊",
-        hint: "Shows the probability of 0, 1, 2, 3... rate shifts in speciation and extinction" },
-      { label: "Extract estimated origination/extinction times for use in environmental correlation models", next: "generate", tags: ["ginput"], icon: "📤",
-        hint: "⚠️ Only works with output from basic parameter estimation, NOT automatic shift detection" },
+      {
+        label: "Check which number of rate shifts has the best statistical support", next: "generate", tags: ["mprob"], icon: "📊",
+        hint: "Shows the probability of 0, 1, 2, 3... rate shifts in speciation and extinction"
+      },
+      {
+        label: "Extract estimated origination/extinction times for use in environmental correlation models", next: "generate", tags: ["ginput"], icon: "📤",
+        hint: "⚠️ Only works with output from basic parameter estimation, NOT automatic shift detection"
+      },
       { label: "Process neural network results (which predictors matter, how they affect rates)", next: "bdnn_post_what", tags: ["bdnn_post"], icon: "🧠" },
     ]
   },
@@ -479,8 +527,10 @@ const TREE = {
     question: "Which neural network results do you need?",
     options: [
       { label: "Rates through time (how speciation and extinction changed over geological time)", next: "generate", tags: ["bdnn_rtt"], icon: "📈" },
-      { label: "How each predictor individually affects rates (partial dependence plots)", next: "generate", tags: ["bdnn_pdp"], icon: "📊",
-        hint: "Shows what happens to rates when you change one predictor while holding everything else constant" },
+      {
+        label: "How each predictor individually affects rates (partial dependence plots)", next: "generate", tags: ["bdnn_pdp"], icon: "📊",
+        hint: "Shows what happens to rates when you change one predictor while holding everything else constant"
+      },
       { label: "Which predictors matter most? (statistical importance ranking)", next: "bdnn_pred_extinct", tags: ["bdnn_pred"], icon: "🏆" },
       { label: "Combined effects of 3+ predictors (interaction analysis)", next: "generate", tags: ["bdnn_interaction"], icon: "🔗" },
     ]
@@ -815,6 +865,54 @@ function ApiKeySetup({ onSave, onCancel }) {
   );
 }
 
+// -- Markdown renderer for chat responses
+function renderMarkdown(text) {
+  const lines = text.split("\n");
+  const elements = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (/^### (.+)/.test(line)) {
+      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 13, color: "#d8ccb8", marginTop: 10, marginBottom: 2 }}>{line.replace(/^### /, "")}</div>);
+    } else if (/^## (.+)/.test(line)) {
+      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 14, color: "#d8ccb8", marginTop: 12, marginBottom: 3, borderBottom: "1px solid rgba(120,90,60,0.2)", paddingBottom: 2 }}>{line.replace(/^## /, "")}</div>);
+    } else if (/^# (.+)/.test(line)) {
+      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 15, color: "#d8ccb8", marginTop: 14, marginBottom: 4 }}>{line.replace(/^# /, "")}</div>);
+    } else if (/^[-*] (.+)/.test(line)) {
+      elements.push(<div key={i} style={{ paddingLeft: 12, marginBottom: 2 }}>{"• "}{inlineMarkdown(line.replace(/^[-*] /, ""))}</div>);
+    } else if (/^\d+\. (.+)/.test(line)) {
+      const m = line.match(/^(\d+)\. (.+)/);
+      elements.push(<div key={i} style={{ paddingLeft: 12, marginBottom: 2 }}>{m[1] + ". "}{inlineMarkdown(m[2])}</div>);
+    } else if (line.trim() === "") {
+      elements.push(<div key={i} style={{ height: 6 }} />);
+    } else {
+      elements.push(<div key={i} style={{ marginBottom: 2 }}>{inlineMarkdown(line)}</div>);
+    }
+    i++;
+  }
+  return elements;
+}
+
+function inlineMarkdown(text) {
+  const parts = [];
+  const re = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g;
+  let last = 0, m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    const token = m[0];
+    if (token.startsWith("`")) {
+      parts.push(<code key={m.index} style={{ background: "rgba(120,90,60,0.18)", borderRadius: 3, padding: "1px 4px", fontFamily: "'JetBrains Mono',monospace", fontSize: 11 }}>{token.slice(1, -1)}</code>);
+    } else if (token.startsWith("**")) {
+      parts.push(<strong key={m.index} style={{ color: "#d8ccb8", fontWeight: 700 }}>{token.slice(2, -2)}</strong>);
+    } else {
+      parts.push(<em key={m.index}>{token.slice(1, -1)}</em>);
+    }
+    last = m.index + token.length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
+
 // ─── DEEP DIVE CHAT ──────────────────────────────────────────────────────
 function Chat({ topic, allTags, choices, apiKey, setApiKey }) {
   const [msgs, setMsgs] = useState([]);
@@ -911,7 +1009,7 @@ ${notes || ""}`;
       <div style={{ maxHeight: 220, overflowY: "auto", padding: 14 }}>
         {msgs.length === 0 && <p style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic", margin: 0 }}>Ask anything — "why does this matter?" or "what if I have lots of singletons?"</p>}
         {msgs.map((m, i) => (
-          <div key={i} style={{ marginBottom: 10, padding: "10px 14px", borderRadius: 10, background: m.role === "user" ? "rgba(120,90,60,0.08)" : "rgba(80,100,120,0.06)", fontSize: 13, lineHeight: 1.6, color: "#c0b098", borderLeft: m.role === "assistant" ? "3px solid rgba(100,120,140,0.25)" : "none" }}>{m.text}</div>
+          <div key={i} style={{ marginBottom: 10, padding: "10px 14px", borderRadius: 10, background: m.role === "user" ? "rgba(120,90,60,0.08)" : "rgba(80,100,120,0.06)", fontSize: 13, lineHeight: 1.6, color: "#c0b098", borderLeft: m.role === "assistant" ? "3px solid rgba(100,120,140,0.25)" : "none" }}>{m.role === "assistant" ? renderMarkdown(m.text) : m.text}</div>
         ))}
         {notesLoading && <div style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic" }}>Loading notes...</div>}
         {loading && <div style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic" }}>Thinking...</div>}
@@ -959,7 +1057,7 @@ Format: command with comments, ⚠️ warnings, 📋 next steps. SLURM: full sba
       const d = await r.json();
       const txt = d.content?.map(b => b.text || "").join("");
       if (txt && txt.length > 50) { setResult(txt); setLoading(false); return; }
-    } catch {}
+    } catch { }
     // Deterministic fallback
     setResult(fallback(tags));
     setLoading(false);
@@ -971,12 +1069,23 @@ Format: command with comments, ⚠️ warnings, 📋 next steps. SLURM: full sba
     if (isSlurm) {
       L.push("#!/bin/bash");
       L.push("#SBATCH --job-name=pyrate_run");
-      L.push("#SBATCH --output=pyrate_%A_%a.out");
-      L.push("#SBATCH --error=pyrate_%A_%a.err");
+      L.push("#SBATCH --output=path_to_your_output_directory/pyrate_%A_%a.out");
+      L.push("#SBATCH --error=path_to_your_output_directory/pyrate_%A_%a.err");
+      L.push("#SBATCH --mail-type=begin   # Send email when job starts");
+      L.push("#SBATCH --mail-type=end     # Send email when job ends");
+      L.push("#SBATCH --mail-user=your_email@example.com  # ← Change to your email address");
       L.push("#SBATCH --array=1-10        # One job per replicate — change 10 to your number of replicates");
-      L.push(t.includes("slurm_bdnn") ? "#SBATCH --time=96:00:00      # BDNN needs more time" : "#SBATCH --time=48:00:00");
-      L.push(t.includes("slurm_bdnn") ? "#SBATCH --mem=16G            # BDNN needs more memory" : "#SBATCH --mem=8G");
-      L.push("#SBATCH --cpus-per-task=1"); L.push(""); L.push("module load python/3.x  # ← Change to match your cluster's module name"); L.push("");
+      L.push(t.includes("slurm_bdnn") ? "#SBATCH --time=14-00:00:00      # BDNN needs more time" : "#SBATCH --time=6-00:00:00");
+      L.push(t.includes("slurm_bdnn") ? "#SBATCH --mem-per-cpu=300MB            # BDNN needs more memory" : "#SBATCH --mem-per-cpu=200MB");
+      L.push("");
+      L.push("# Change to the directory where the script should run (adjust the path)");
+      L.push("cd path/to/your_working_directory");
+      L.push("");
+      L.push("# Load necessary modules (adjust based on your cluster's setup)");
+      L.push("module purge")
+      L.push("module load python/3.12");
+      L.push("");
+
     }
     const jflag = isSlurm ? "$SLURM_ARRAY_TASK_ID" : "1";
     const mcmc = t.includes("n50m_s10k") ? "-n 50000000 -s 10000" : t.includes("n1m_s1k") ? "-n 1000000 -s 1000" : "-n 20000000 -s 5000";
@@ -984,26 +1093,26 @@ Format: command with comments, ⚠️ warnings, 📋 next steps. SLURM: full sba
     if (t.includes("ginput")) {
       L.push("# Extract estimated speciation/extinction times from a previous PyRate run");
       L.push("# ⚠️ Only works with basic parameter estimation output — NOT with RJMCMC!");
-      L.push("python PyRate.py -ginput path/to/*_mcmc.log -b 200");
+      L.push("python PyRate.py -ginput path/to/*_mcmc.log -b 100");
       L.push("# Output: *_se_est.txt — use this as input for PyRateContinuous or MBD");
     } else if (t.includes("mprob")) {
       L.push("# Check which number of rate shifts has the best support");
-      L.push("python PyRate.py -mProb path/to/*_mcmc.log -b 200");
+      L.push("python PyRate.py -mProb path/to/*_mcmc.log -b 100");
       L.push("# Output: table showing probability of 0, 1, 2, 3... shifts for speciation and extinction");
     } else if (t.includes("combrj")) {
       L.push("# ⚠️ First: move any previously-combined files OUT of this directory!");
       L.push("# Combine replicate outputs (works for RJMCMC, MCMC, and most analysis types)");
-      L.push("python PyRate.py -combLogRJ path/to/pyrate_mcmc_logs/ -b 200 -tag YourDatasetName");
+      L.push("python PyRate.py -combLogRJ path/to/pyrate_mcmc_logs/ -b 100 -tag YourDatasetName");
     } else if (t.includes("combbdnn")) {
       L.push("# ⚠️ First: move any previously-combined files OUT of this directory!");
-      L.push("python PyRate.py -combBDNN path/to/pyrate_mcmc_logs/ -b 20 -resample 100 -tag YourDatasetName");
+      L.push("python PyRate.py -combBDNN path/to/pyrate_mcmc_logs/ -b 100 -resample 100 -tag YourDatasetName");
     } else if (t.includes("plotrj")) {
       L.push("# Plot rates through time (automatic shift detection results)");
-      L.push("python PyRate.py -plotRJ path/to/pyrate_mcmc_logs/ -b 200 -tag YourDatasetName");
+      L.push("python PyRate.py -plotRJ path/to/pyrate_mcmc_logs/ -b 100 -tag YourDatasetName");
       L.push("# Optional: -root_plot 66 -min_age_plot 0    # Limit time range shown");
       L.push("# Optional: -grid_plot 0.5                    # Change time resolution");
     } else if (t.includes("plot_marginal")) {
-      L.push("python PyRate.py -plot path/to/*_marginal_rates.log -b 200");
+      L.push("python PyRate.py -plot path/to/*_marginal_rates.log -b 100");
     } else if (t.includes("plotbdnn") || t.includes("bdnn_rtt")) {
       L.push("python PyRate.py -plotBDNN path/to/*_mcmc.log -b 0.1");
     } else if (t.includes("bdnn_pdp")) {
@@ -1014,7 +1123,7 @@ Format: command with comments, ⚠️ warnings, 📋 next steps. SLURM: full sba
       L.push("python PyRate.py -BDNN_pred_importance path/to/*_mcmc.log -b 0.1" + (t.includes("bdnn_pred_extinct") ? " \\\n  -BDNN_nsim_expected_cv 0  # Required for extinct groups" : ""));
     } else if (t.includes("bdnn_interaction")) {
       L.push("python PyRate.py -BDNN_interaction path/to/*_mcmc.log \\");
-      L.push("  -plotBDNN_transf_features path/to/Backscale.txt -b 0.5 -resample 3");
+      L.push("  -plotBDNN_transf_features path/to/Backscale.txt -b 0.1 -resample 100");
     } else if (t.includes("plot_continuous")) {
       L.push("python PyRateContinuous.py -d path/to/*_se_est.txt \\");
       L.push("  -plot path/to/*_mcmc.log -b 100");
@@ -1061,12 +1170,12 @@ Format: command with comments, ⚠️ warnings, 📋 next steps. SLURM: full sba
       L.push(`  -mCov ${mc} \\`);
       if (t.includes("mcov3") || t.includes("mcov5")) L.push("  -pC 0 \\                                 # Estimate correlation prior from data (recommended for 2+ params)");
       L.push("  -logT 1 \\                               # Log-transform the trait");
-      if (t.includes("gamma")) L.push("  -mG \\                                    # Lineage-specific preservation variation");
+      if (t.includes("gamma")) L.push("  -mG \\                                    # Gamma model: allowing different preservation rates per lineage");
       L.push(`  ${mcmc} -p 1000 -j ${jflag}`);
     } else if (t.includes("ade")) {
       L.push("python PyRate.py path/to/*_PyRate.py \\");
       L.push("  -ADE 1 \\                                # Age-dependent extinction model");
-      if (t.includes("ade_tpp")) L.push("  -qShift path/to/epochs.txt \\            # Time-binned preservation (required for ADE)");
+      if (t.includes("ade_tpp")) L.push("  -qShift path/to/epochs.txt \\            # Time-binned preservation rates (required for ADE)");
       else L.push("  -mHPP \\                                 # Constant preservation (required for ADE)");
       L.push(`  ${mcmc} -j ${jflag}`);
     } else {
@@ -1074,17 +1183,18 @@ Format: command with comments, ⚠️ warnings, 📋 next steps. SLURM: full sba
       L.push("python PyRate.py path/to/*_PyRate.py \\");
       if (t.includes("rjmcmc")) L.push("  # Automatic rate-shift detection (RJMCMC) is the default — no flag needed \\");
       if (t.includes("constant_rates")) L.push("  -A 0 \\                                  # Constant rates (basic parameter estimation) \\");
-      if (t.includes("fixshift_confirmed")) L.push("  -fixShift path/to/shift_times.txt \\     # ⚠️ This turns off automatic shift detection! \\");
+      if (t.includes("fixshift_confirmed")) L.push("  -fixShift path/to/shift_times.txt \\     # Time-binned birth-death model. ⚠️ This turns off automatic shift detection (RJMCMC)! \\");
       if (t.includes("edgeshift_both") || t.includes("edgeshift_max")) L.push("  -edgeShift MAX_AGE MIN_AGE \\             # ← Replace with your boundary ages \\");
       if (t.includes("hpp")) L.push("  -mHPP \\                                 # Constant preservation rate \\");
-      if (t.includes("tpp")) L.push("  -qShift path/to/epochs_q.txt \\          # Time-binned preservation \\");
-      if (t.includes("gamma")) L.push("  -mG \\                                    # Different preservation rates per lineage \\");
-      if (t.includes("gibbs")) L.push("  -se_gibbs -fU 0.02 0.18 0.08 \\         # Faster algorithm for large datasets \\");
-      L.push(`  ${mcmc} -p 1000 -j ${jflag}`);
+      if (t.includes("tpp")) L.push("  -qShift path/to/epochs_q.txt \\          # Time-binned preservation rates \\");
+      if (t.includes("gamma")) L.push("  -mG \\                                    # Gamma model: allowing different preservation rates per lineage \\");
+      if (t.includes("gibbs")) L.push("  -se_gibbs -fU 0.02 0.18 0.08 \\         # Faster RJMCMC algorithm for large datasets \\");
+      L.push("-wd path/to/output_directory/ \\                # Output directory for logs and results");
+      L.push(`  ${mcmc} -j ${jflag}`);
     }
     L.push(""); L.push("# ─── NEXT STEPS ───");
     L.push("# 1. Replace all path/to/ placeholders with your actual file paths");
-    L.push("# 2. After the run finishes, open *_mcmc.log in Tracer");
+    L.push("# 2. After the run finishes, open the outputted *_mcmc.log(s) in Tracer");
     L.push("# 3. Check that ESS ≥ 200 for all parameters — if not, increase -n and re-run");
     return L.join("\n");
   };
