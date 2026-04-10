@@ -136,7 +136,7 @@ const TREE = {
     id: "data_source", topic: "data_prep",
     question: "Where is your fossil data coming from?",
     subtitle: "PyRate needs fossil occurrence data — species names with age ranges. The preparation step depends on your data source.",
-    explain: `Your raw data needs to be converted into a special PyRate input file using R. The exact R function depends on where your data came from. If you downloaded from the Paleobiology Database, there's a dedicated function for that format. If you built your own spreadsheet, there's a simpler function. Either way, the output is the same: a *_PyRate.py file that PyRate can read.`,
+    explain: `Your raw data needs to be converted into a special PyRate input file using R. The exact R function depends on where your data came from. This site will build it for you! If you downloaded from the Paleobiology Database, there's a dedicated function for that format. If you built your own spreadsheet, there's a simpler function. Either way, the output is the same: a *_PyRate.py file that PyRate can read.`,
     options: [
       { label: "I downloaded occurrence data from the Paleobiology Database (PBDB)", next: "data_extant", tags: ["pbdb"], icon: "🌐" },
       { label: "I have my own spreadsheet with species, status (extant/extinct), and age ranges", next: "data_extant", tags: ["manual"], icon: "📝" },
@@ -179,8 +179,11 @@ const TREE = {
 ## Required columns (in this exact order)
 
 **Species** — the scientific name, spelled consistently. Typos create phantom species that inflate your diversity estimates.
+
 **Status** — exactly the word "extant" (still alive today) or "extinct". No other values.
+
 **min_age** — the youngest possible age of that fossil, in millions of years before present.
+
 **max_age** — the oldest possible age of that fossil, in millions of years before present.
 
 For example, a fossil of *Canis lupus* dated to 0.01–0.5 Ma would be one row with min_age = 0.01, max_age = 0.5.
@@ -188,14 +191,16 @@ For example, a fossil of *Canis lupus* dated to 0.01–0.5 Ma would be one row w
 ## If using PBDB data
 
 When downloading from the Paleobiology Database, apply these settings before saving:
-- **Check** "Show accepted names only" (in the Select by taxonomy section)
-- **Uncheck** "Include metadata at the beginning of the output" (in Choose output options)
+- **Check** the "Show accepted names only" option (in the Select by taxonomy section)
+- **Uncheck** the "Include metadata at the beginning of the output" option (in Choose output options)
 
-Save the file as a CSV (e.g., \`YourClade_pbdb_data.csv\`).
+Save the file as a CSV (e.g., working_directory\`YourClade_pbdb_data.csv\`).
 
 ## If using site-based randomization
 
-Add a **Site** column with an identifier for each excavation site. All fossils from the same site will be assigned the same randomly sampled age — drawn from the average of that site's age range — rather than each fossil getting an independently sampled age.
+Add a **Site** column with an identifier for each excavation site. All fossil occurrences that come from the same site will be assigned the same randomly sampled age — drawn from the average of that site's age range — rather than each fossil getting an independently sampled age.
+
+## Now you are ready to run the R commands generated for you below
 
 ## Output files
 
@@ -1101,8 +1106,8 @@ function RCmdBuilder({ tags }) {
     const repArg = rep10
       ? "  replicates = 10"
       : repCustom
-      ? "  replicates = N,                        # ← Replace N with your desired number"
-      : null;
+        ? "  replicates = N,                        # ← Replace N with your desired number"
+        : null;
 
     let L = [];
     L.push("# Load PyRate's R utility functions");
@@ -1422,8 +1427,9 @@ export default function PyRateWizard() {
       <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid rgba(120,90,60,0.08)", background: "rgba(20,17,14,0.95)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
-            <h1 style={{ margin: 0, fontSize: 21, fontWeight: 700, color: "#ddd0c0", fontFamily: "'Source Serif 4',Georgia,serif" }}>🦴 PyRate Wizard</h1>
-            <p style={{ margin: "3px 0 0", fontSize: 12.5, color: "#5a4e3a" }}>Guided setup for fossil diversification analysis</p>
+            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: "#ddd0c0", fontFamily: "'Source Serif 4',Georgia,serif" }}>🦴 PyRate Wizard</h1>
+            <p style={{ margin: "3px 0 0", fontSize: 14, color: "#5a4e3a" }}>Guided setup for fossil diversification analysis</p>
+            <p style={{ margin: "3px 0 0", fontSize: 12.5, color: "#5a4e3a" }}>PyRate is developed by Dr. Daniele Silvestro and Dr. Torsten Hauffe. To submit questions or issues about this site, please email ShelleyLWang@gmail.com</p>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
             {hist.length > 0 && <button onClick={back} style={{ background: "rgba(120,90,60,0.06)", border: "1px solid rgba(120,90,60,0.15)", borderRadius: 7, padding: "6px 13px", color: "#907a60", cursor: "pointer", fontSize: 13 }}>← Back</button>}
