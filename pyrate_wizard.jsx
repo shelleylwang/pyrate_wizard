@@ -1427,9 +1427,8 @@ export default function PyRateWizard() {
       <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid rgba(120,90,60,0.08)", background: "rgba(20,17,14,0.95)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
-            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: "#ddd0c0", fontFamily: "'Source Serif 4',Georgia,serif" }}>🦴 PyRate Wizard</h1>
-            <p style={{ margin: "3px 0 0", fontSize: 14, color: "#5a4e3a" }}>Guided setup for fossil diversification analysis</p>
-            <p style={{ margin: "3px 0 0", fontSize: 12.5, color: "#5a4e3a" }}>PyRate is developed by Dr. Daniele Silvestro and Dr. Torsten Hauffe. To submit questions or issues about this site, please email ShelleyLWang@gmail.com</p>
+            <h1 style={{ margin: 0, fontSize: 21, fontWeight: 700, color: "#ddd0c0", fontFamily: "'Source Serif 4',Georgia,serif" }}>🦴 PyRate Wizard</h1>
+            <p style={{ margin: "3px 0 0", fontSize: 13, color: "#5a4e3a" }}>Guided setup for fossil diversification analysis</p>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
             {hist.length > 0 && <button onClick={back} style={{ background: "rgba(120,90,60,0.06)", border: "1px solid rgba(120,90,60,0.15)", borderRadius: 7, padding: "6px 13px", color: "#907a60", cursor: "pointer", fontSize: 13 }}>← Back</button>}
@@ -1449,7 +1448,7 @@ export default function PyRateWizard() {
         </div>
       )}
       {/* Content */}
-      <div style={{ padding: "26px 24px 44px", maxWidth: 660, margin: "0 auto", animation: "fu .3s ease" }} key={cur}>
+      <div style={{ padding: "26px 24px 44px", maxWidth: 760, margin: "0 auto", animation: "fu .3s ease" }} key={cur}>
         <h2 style={{ fontSize: 20, fontWeight: 600, margin: "0 0 5px", color: "#ddd0c0", lineHeight: 1.35, fontFamily: "'Source Serif 4',Georgia,serif" }}>{node.question}</h2>
         {node.subtitle && <p style={{ fontSize: 13.5, color: "#7a6e58", margin: "0 0 18px", lineHeight: 1.55 }}>{node.subtitle}</p>}
         {/* Explanation */}
@@ -1496,6 +1495,11 @@ export default function PyRateWizard() {
             </div>
           </>
         )}
+      </div>
+      {/* Footer */}
+      <div style={{ padding: "24px 24px", textAlign: "center", borderTop: "1px solid rgba(120,90,60,0.08)", fontSize: 12, color: "#5a4e3a", lineHeight: 1.7 }}>
+        PyRate is developed by Dr. Daniele Silvestro and Dr. Torsten Hauffe.<br />
+        To submit questions or issues about this site, please email <a href="mailto:ShelleyLWang@gmail.com" style={{ color: "#7a6e58", textDecoration: "underline" }}>ShelleyLWang@gmail.com</a>.
       </div>
     </div>
   );
