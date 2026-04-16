@@ -817,6 +817,48 @@ Windows installation requires manually compiling the C++ module. See the **techn
   }
 };
 
+// -- Theme constants
+const DARK = {
+  bg: "#151210", bgHeader: "rgba(20,17,14,0.95)", bgChat: "rgba(12,10,8,0.6)",
+  bgCode: "rgba(8,7,5,0.9)", bgCodeAlt: "rgba(8,7,5,0.85)",
+  bgCard: "rgba(120,90,60,0.03)", bgCardMd: "rgba(120,90,60,0.04)", bgCardHv: "rgba(120,90,60,0.06)",
+  bgTech: "rgba(70,90,110,0.04)", bgInput: "rgba(120,90,60,0.05)",
+  bgUserMsg: "rgba(120,90,60,0.08)", bgAsstMsg: "rgba(80,100,120,0.06)",
+  text: "#d8ccb8", textH: "#ddd0c0", textBody: "#c8baa4",
+  textMuted: "#5a4e3a", textMid: "#7a6e58", textAccent: "#a89878",
+  textLabel: "#907a60", textCode: "#7a98a8", textCodeR: "#a8ccb0",
+  textCodePre: "#d0c4b0", textChat: "#c0b098", textFaint: "#4a4030",
+  textHint: "#5e5240", textArrow: "#3a3428", textRCmd: "#7a9878",
+  border: "rgba(120,90,60,0.08)", borderMd: "rgba(120,90,60,0.15)",
+  borderCard: "rgba(120,90,60,0.1)", borderInput: "rgba(120,90,60,0.2)",
+  borderAccent: "rgba(160,120,70,0.25)", borderTech: "rgba(70,90,110,0.18)",
+  borderTechBtn: "rgba(80,100,120,0.15)", borderChat: "rgba(120,90,60,0.12)",
+  borderChatMsg: "rgba(100,120,140,0.25)", borderRCmd: "rgba(70,130,80,0.28)",
+  borderRCmdBtn: "rgba(70,130,80,0.22)",
+  progActive: "rgba(170,130,80,0.55)", progInactive: "rgba(120,90,60,0.08)",
+  themeIcon: "☀️", themeLabel: "Light",
+};
+const LIGHT = {
+  bg: "#f4efe6", bgHeader: "rgba(240,234,222,0.97)", bgChat: "rgba(232,225,212,0.9)",
+  bgCode: "rgba(220,213,200,0.95)", bgCodeAlt: "rgba(215,208,195,0.9)",
+  bgCard: "rgba(120,90,60,0.05)", bgCardMd: "rgba(120,90,60,0.07)", bgCardHv: "rgba(120,90,60,0.1)",
+  bgTech: "rgba(60,80,100,0.06)", bgInput: "rgba(120,90,60,0.06)",
+  bgUserMsg: "rgba(120,90,60,0.1)", bgAsstMsg: "rgba(60,80,100,0.07)",
+  text: "#2e2416", textH: "#1a1008", textBody: "#4a3c28",
+  textMuted: "#9a8a70", textMid: "#6a5c48", textAccent: "#6a5438",
+  textLabel: "#7a6848", textCode: "#2a5a6a", textCodeR: "#2a6a3a",
+  textCodePre: "#3a3020", textChat: "#4a3c28", textFaint: "#b0a080",
+  textHint: "#9a8a68", textArrow: "#c0a878", textRCmd: "#3a7848",
+  border: "rgba(120,90,60,0.18)", borderMd: "rgba(120,90,60,0.28)",
+  borderCard: "rgba(120,90,60,0.2)", borderInput: "rgba(120,90,60,0.3)",
+  borderAccent: "rgba(140,100,50,0.4)", borderTech: "rgba(50,70,90,0.28)",
+  borderTechBtn: "rgba(60,80,100,0.22)", borderChat: "rgba(120,90,60,0.2)",
+  borderChatMsg: "rgba(80,100,120,0.35)", borderRCmd: "rgba(50,110,60,0.4)",
+  borderRCmdBtn: "rgba(50,110,60,0.35)",
+  progActive: "rgba(160,120,60,0.65)", progInactive: "rgba(120,90,60,0.18)",
+  themeIcon: "🌙", themeLabel: "Dark",
+};
+
 // ─── MARKDOWN RENDERER ───────────────────────────────────────────────────
 function MiniMarkdown({ children }) {
   if (!children) return null;
@@ -877,7 +919,7 @@ function MiniMarkdown({ children }) {
 }
 
 // ─── API KEY SETUP PANEL ──────────────────────────────────────────────────
-function ApiKeySetup({ onSave, onCancel }) {
+function ApiKeySetup({ onSave, onCancel, T }) {
   const [draft, setDraft] = useState("");
   const [err, setErr] = useState("");
 
@@ -889,32 +931,32 @@ function ApiKeySetup({ onSave, onCancel }) {
   };
 
   return (
-    <div style={{ border: "1px solid rgba(120,90,60,0.2)", borderRadius: 12, background: "rgba(12,10,8,0.8)", padding: "20px 22px" }}>
+    <div style={{ border: `1px solid ${T.borderInput}`, borderRadius: 12, background: T.bgChat, padding: "20px 22px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <span style={{ fontWeight: 600, fontSize: 14, color: "#c8baa4", fontFamily: "'Source Serif 4',Georgia,serif" }}>Connect to Claude AI</span>
-        {onCancel && <button onClick={onCancel} style={{ background: "none", border: "none", color: "#5a4e3a", cursor: "pointer", fontSize: 15 }}>✕</button>}
+        <span style={{ fontWeight: 600, fontSize: 14, color: T.textBody, fontFamily: "'Source Serif 4',Georgia,serif" }}>Connect to Claude AI</span>
+        {onCancel && <button onClick={onCancel} style={{ background: "none", border: "none", color: T.textMuted, cursor: "pointer", fontSize: 15 }}>✕</button>}
       </div>
 
       {/* -- What is an API key */}
-      <div style={{ fontSize: 13, lineHeight: 1.7, color: "#907a60", marginBottom: 16 }}>
-        <p style={{ margin: "0 0 10px" }}>An <strong style={{ color: "#a89878" }}>API key</strong> lets this tool talk to Claude AI so you can ask follow-up questions in plain English. Without one, you can still use all the built-in explanations and generate commands — the AI chat is optional.</p>
+      <div style={{ fontSize: 13, lineHeight: 1.7, color: T.textLabel, marginBottom: 16 }}>
+        <p style={{ margin: "0 0 10px" }}>An <strong style={{ color: T.textAccent }}>API key</strong> lets this tool talk to Claude AI so you can ask follow-up questions in plain English. Without one, you can still use all the built-in explanations and generate commands — the AI chat is optional.</p>
         <p style={{ margin: 0 }}>Your key is stored only in your browser and never sent anywhere except Anthropic's servers.</p>
       </div>
 
       {/* -- Cost info */}
-      <div style={{ padding: "10px 14px", borderRadius: 9, background: "rgba(120,90,60,0.04)", border: "1px solid rgba(120,90,60,0.1)", marginBottom: 16, fontSize: 12.5, color: "#7a6e58", lineHeight: 1.6 }}>
-        <div style={{ fontWeight: 600, color: "#907a60", marginBottom: 4 }}>Cost</div>
-        Pay-as-you-go — no subscription needed. Typical questions here cost <strong style={{ color: "#a89878" }}>less than $0.01 each</strong> (roughly $3 per million words sent to Claude, $15 per million words back). A full session of 20 questions would cost around $0.10–0.30.
+      <div style={{ padding: "10px 14px", borderRadius: 9, background: T.bgCardMd, border: `1px solid ${T.borderCard}`, marginBottom: 16, fontSize: 12.5, color: T.textMid, lineHeight: 1.6 }}>
+        <div style={{ fontWeight: 600, color: T.textLabel, marginBottom: 4 }}>Cost</div>
+        Pay-as-you-go — no subscription needed. Typical questions here cost <strong style={{ color: T.textAccent }}>less than $0.01 each</strong> (roughly $3 per million words sent to Claude, $15 per million words back). A full session of 20 questions would cost around $0.10–0.30.
       </div>
 
       {/* -- How to get a key */}
       <div style={{ marginBottom: 16 }}>
-        <div style={{ fontWeight: 600, fontSize: 12, color: "#907a60", marginBottom: 8, textTransform: "uppercase", letterSpacing: ".05em" }}>How to get a key</div>
-        <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: "#7a6e58", lineHeight: 1.9 }}>
-          <li>Go to <strong style={{ color: "#a89878" }}>console.anthropic.com</strong> and create a free account</li>
-          <li>Click <strong style={{ color: "#a89878" }}>API Keys</strong> in the left sidebar</li>
-          <li>Click <strong style={{ color: "#a89878" }}>Create Key</strong>, give it any name</li>
-          <li>Copy the key (it starts with <code style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5, color: "#8a9898" }}>sk-ant-</code>) and paste it below</li>
+        <div style={{ fontWeight: 600, fontSize: 12, color: T.textLabel, marginBottom: 8, textTransform: "uppercase", letterSpacing: ".05em" }}>How to get a key</div>
+        <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: T.textMid, lineHeight: 1.9 }}>
+          <li>Go to <strong style={{ color: T.textAccent }}>console.anthropic.com</strong> and create a free account</li>
+          <li>Click <strong style={{ color: T.textAccent }}>API Keys</strong> in the left sidebar</li>
+          <li>Click <strong style={{ color: T.textAccent }}>Create Key</strong>, give it any name</li>
+          <li>Copy the key (it starts with <code style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5, color: T.textCode }}>sk-ant-</code>) and paste it below</li>
           <li>Add a credit card to activate the key</li>
         </ol>
       </div>
@@ -926,9 +968,9 @@ function ApiKeySetup({ onSave, onCancel }) {
           onChange={e => { setDraft(e.target.value); setErr(""); }}
           onKeyDown={e => e.key === "Enter" && save()}
           placeholder="sk-ant-api03-..."
-          style={{ flex: 1, background: "rgba(120,90,60,0.05)", border: `1px solid ${err ? "rgba(180,80,60,0.4)" : "rgba(120,90,60,0.2)"}`, borderRadius: 8, padding: "9px 12px", color: "#c0b098", fontSize: 13, fontFamily: "'JetBrains Mono',monospace", outline: "none" }}
+          style={{ flex: 1, background: T.bgInput, border: `1px solid ${err ? "rgba(180,80,60,0.4)" : T.borderInput}`, borderRadius: 8, padding: "9px 12px", color: T.textChat, fontSize: 13, fontFamily: "'JetBrains Mono',monospace", outline: "none" }}
         />
-        <button onClick={save} style={{ background: "rgba(120,90,60,0.15)", border: "1px solid rgba(120,90,60,0.25)", borderRadius: 8, padding: "9px 16px", color: "#b09070", cursor: "pointer", fontSize: 13, whiteSpace: "nowrap" }}>Save key</button>
+        <button onClick={save} style={{ background: T.bgCardHv, border: `1px solid ${T.borderMd}`, borderRadius: 8, padding: "9px 16px", color: T.textAccent, cursor: "pointer", fontSize: 13, whiteSpace: "nowrap" }}>Save key</button>
       </div>
       {err && <div style={{ marginTop: 7, fontSize: 12, color: "rgba(200,100,80,0.8)" }}>{err}</div>}
     </div>
@@ -936,34 +978,34 @@ function ApiKeySetup({ onSave, onCancel }) {
 }
 
 // -- Markdown renderer for chat responses
-function renderMarkdown(text) {
+function renderMarkdown(text, T) {
   const lines = text.split("\n");
   const elements = [];
   let i = 0;
   while (i < lines.length) {
     const line = lines[i];
     if (/^### (.+)/.test(line)) {
-      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 13, color: "#d8ccb8", marginTop: 10, marginBottom: 2 }}>{line.replace(/^### /, "")}</div>);
+      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 13, color: T.textH, marginTop: 10, marginBottom: 2 }}>{line.replace(/^### /, "")}</div>);
     } else if (/^## (.+)/.test(line)) {
-      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 14, color: "#d8ccb8", marginTop: 12, marginBottom: 3, borderBottom: "1px solid rgba(120,90,60,0.2)", paddingBottom: 2 }}>{line.replace(/^## /, "")}</div>);
+      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 14, color: T.textH, marginTop: 12, marginBottom: 3, borderBottom: `1px solid ${T.borderInput}`, paddingBottom: 2 }}>{line.replace(/^## /, "")}</div>);
     } else if (/^# (.+)/.test(line)) {
-      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 15, color: "#d8ccb8", marginTop: 14, marginBottom: 4 }}>{line.replace(/^# /, "")}</div>);
+      elements.push(<div key={i} style={{ fontWeight: 700, fontSize: 15, color: T.textH, marginTop: 14, marginBottom: 4 }}>{line.replace(/^# /, "")}</div>);
     } else if (/^[-*] (.+)/.test(line)) {
-      elements.push(<div key={i} style={{ paddingLeft: 12, marginBottom: 2 }}>{"• "}{inlineMarkdown(line.replace(/^[-*] /, ""))}</div>);
+      elements.push(<div key={i} style={{ paddingLeft: 12, marginBottom: 2 }}>{"• "}{inlineMarkdown(line.replace(/^[-*] /, ""), T)}</div>);
     } else if (/^\d+\. (.+)/.test(line)) {
       const m = line.match(/^(\d+)\. (.+)/);
-      elements.push(<div key={i} style={{ paddingLeft: 12, marginBottom: 2 }}>{m[1] + ". "}{inlineMarkdown(m[2])}</div>);
+      elements.push(<div key={i} style={{ paddingLeft: 12, marginBottom: 2 }}>{m[1] + ". "}{inlineMarkdown(m[2], T)}</div>);
     } else if (line.trim() === "") {
       elements.push(<div key={i} style={{ height: 6 }} />);
     } else {
-      elements.push(<div key={i} style={{ marginBottom: 2 }}>{inlineMarkdown(line)}</div>);
+      elements.push(<div key={i} style={{ marginBottom: 2 }}>{inlineMarkdown(line, T)}</div>);
     }
     i++;
   }
   return elements;
 }
 
-function inlineMarkdown(text) {
+function inlineMarkdown(text, T) {
   const parts = [];
   const re = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g;
   let last = 0, m;
@@ -971,9 +1013,9 @@ function inlineMarkdown(text) {
     if (m.index > last) parts.push(text.slice(last, m.index));
     const token = m[0];
     if (token.startsWith("`")) {
-      parts.push(<code key={m.index} style={{ background: "rgba(120,90,60,0.18)", borderRadius: 3, padding: "1px 4px", fontFamily: "'JetBrains Mono',monospace", fontSize: 11 }}>{token.slice(1, -1)}</code>);
+      parts.push(<code key={m.index} style={{ background: T.bgUserMsg, borderRadius: 3, padding: "1px 4px", fontFamily: "'JetBrains Mono',monospace", fontSize: 11 }}>{token.slice(1, -1)}</code>);
     } else if (token.startsWith("**")) {
-      parts.push(<strong key={m.index} style={{ color: "#d8ccb8", fontWeight: 700 }}>{token.slice(2, -2)}</strong>);
+      parts.push(<strong key={m.index} style={{ color: T.textH, fontWeight: 700 }}>{token.slice(2, -2)}</strong>);
     } else {
       parts.push(<em key={m.index}>{token.slice(1, -1)}</em>);
     }
@@ -984,7 +1026,7 @@ function inlineMarkdown(text) {
 }
 
 // ─── DEEP DIVE CHAT ──────────────────────────────────────────────────────
-function Chat({ topic, allTags, choices, apiKey, setApiKey }) {
+function Chat({ topic, allTags, choices, apiKey, setApiKey, T }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -1052,8 +1094,8 @@ ${notes || ""}`;
   // -- Collapsed button
   if (!open) return (
     <button onClick={() => { setOpen(true); if (!apiKey) setShowKeySetup(true); }} style={{
-      background: "none", border: "1px solid rgba(120,90,60,0.15)", borderRadius: 10,
-      padding: "10px 18px", color: "#806a50", cursor: "pointer", fontSize: 13,
+      background: "none", border: `1px solid ${T.borderMd}`, borderRadius: 10,
+      padding: "10px 18px", color: T.textMid, cursor: "pointer", fontSize: 13,
       fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: 8, width: "100%", justifyContent: "center"
     }}>💬 Have a question? Ask Claude for more detail</button>
   );
@@ -1063,37 +1105,38 @@ ${notes || ""}`;
     <ApiKeySetup
       onSave={k => { setApiKey(k); setShowKeySetup(false); }}
       onCancel={() => { setOpen(false); setShowKeySetup(false); }}
+      T={T}
     />
   );
 
   // -- Chat panel
   return (
-    <div style={{ border: "1px solid rgba(120,90,60,0.15)", borderRadius: 12, overflow: "hidden", background: "rgba(12,10,8,0.6)" }}>
-      <div style={{ padding: "10px 16px", background: "rgba(120,90,60,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(120,90,60,0.08)" }}>
-        <span style={{ fontSize: 13, color: "#907a60", fontFamily: "'DM Sans',sans-serif" }}>💬 Ask Claude</span>
+    <div style={{ border: `1px solid ${T.borderMd}`, borderRadius: 12, overflow: "hidden", background: T.bgChat }}>
+      <div style={{ padding: "10px 16px", background: T.bgCardHv, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: `1px solid ${T.border}` }}>
+        <span style={{ fontSize: 13, color: T.textLabel, fontFamily: "'DM Sans',sans-serif" }}>💬 Ask Claude</span>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <button onClick={() => setShowKeySetup(true)} title="Change API key" style={{ background: "none", border: "none", color: "#5a4e3a", cursor: "pointer", fontSize: 12 }}>🔑</button>
-          <button onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: "#5a4e3a", cursor: "pointer", fontSize: 15 }}>✕</button>
+          <button onClick={() => setShowKeySetup(true)} title="Change API key" style={{ background: "none", border: "none", color: T.textMuted, cursor: "pointer", fontSize: 12 }}>🔑</button>
+          <button onClick={() => setOpen(false)} style={{ background: "none", border: "none", color: T.textMuted, cursor: "pointer", fontSize: 15 }}>✕</button>
         </div>
       </div>
       <div style={{ maxHeight: 220, overflowY: "auto", padding: 14 }}>
-        {msgs.length === 0 && <p style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic", margin: 0 }}>Ask anything — "why does this matter?" or "what if I have lots of singletons?"</p>}
+        {msgs.length === 0 && <p style={{ color: T.textMuted, fontSize: 13, fontStyle: "italic", margin: 0 }}>Ask anything — "why does this matter?" or "what if I have lots of singletons?"</p>}
         {msgs.map((m, i) => (
-          <div key={i} style={{ marginBottom: 10, padding: "10px 14px", borderRadius: 10, background: m.role === "user" ? "rgba(120,90,60,0.08)" : "rgba(80,100,120,0.06)", fontSize: 13, lineHeight: 1.6, color: "#c0b098", borderLeft: m.role === "assistant" ? "3px solid rgba(100,120,140,0.25)" : "none" }}>{m.role === "assistant" ? renderMarkdown(m.text) : m.text}</div>
+          <div key={i} style={{ marginBottom: 10, padding: "10px 14px", borderRadius: 10, background: m.role === "user" ? T.bgUserMsg : T.bgAsstMsg, fontSize: 13, lineHeight: 1.6, color: T.textChat, borderLeft: m.role === "assistant" ? `3px solid ${T.borderChatMsg}` : "none" }}>{m.role === "assistant" ? renderMarkdown(m.text, T) : m.text}</div>
         ))}
-        {notesLoading && <div style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic" }}>Loading notes...</div>}
-        {loading && <div style={{ color: "#5a4e3a", fontSize: 13, fontStyle: "italic" }}>Thinking...</div>}
+        {notesLoading && <div style={{ color: T.textMuted, fontSize: 13, fontStyle: "italic" }}>Loading notes...</div>}
+        {loading && <div style={{ color: T.textMuted, fontSize: 13, fontStyle: "italic" }}>Thinking...</div>}
       </div>
-      <div style={{ display: "flex", gap: 8, padding: "8px 12px", borderTop: "1px solid rgba(120,90,60,0.08)" }}>
-        <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && ask()} placeholder="Type your question..." style={{ flex: 1, background: "rgba(120,90,60,0.05)", border: "1px solid rgba(120,90,60,0.12)", borderRadius: 8, padding: "8px 12px", color: "#c0b098", fontSize: 13, fontFamily: "'DM Sans',sans-serif", outline: "none" }} />
-        <button onClick={ask} disabled={loading || notesLoading} style={{ background: "rgba(120,90,60,0.12)", border: "1px solid rgba(120,90,60,0.2)", borderRadius: 8, padding: "8px 14px", color: "#907a60", cursor: "pointer", fontSize: 13 }}>Send</button>
+      <div style={{ display: "flex", gap: 8, padding: "8px 12px", borderTop: `1px solid ${T.border}` }}>
+        <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && ask()} placeholder="Type your question..." style={{ flex: 1, background: T.bgInput, border: `1px solid ${T.borderChat}`, borderRadius: 8, padding: "8px 12px", color: T.textChat, fontSize: 13, fontFamily: "'DM Sans',sans-serif", outline: "none" }} />
+        <button onClick={ask} disabled={loading || notesLoading} style={{ background: T.bgCardHv, border: `1px solid ${T.borderInput}`, borderRadius: 8, padding: "8px 14px", color: T.textLabel, cursor: "pointer", fontSize: 13 }}>Send</button>
       </div>
     </div>
   );
 }
 
 // ─── R COMMAND BUILDER ────────────────────────────────────────────────────
-function RCmdBuilder({ tags }) {
+function RCmdBuilder({ tags, T }) {
   const [copied, setCopied] = useState(false);
 
   const buildCmd = () => {
@@ -1160,13 +1203,13 @@ function RCmdBuilder({ tags }) {
     <div style={{ marginBottom: 20 }}>
       {/* -- R command header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <span style={{ fontSize: 11, fontWeight: 600, color: "#7a9878", textTransform: "uppercase", letterSpacing: ".06em" }}>R Command</span>
-        <button onClick={copy} style={{ background: "none", border: "1px solid rgba(70,130,80,0.22)", borderRadius: 6, padding: "4px 12px", color: "#7a9878", cursor: "pointer", fontSize: 11.5 }}>
+        <span style={{ fontSize: 11, fontWeight: 600, color: T.textRCmd, textTransform: "uppercase", letterSpacing: ".06em" }}>R Command</span>
+        <button onClick={copy} style={{ background: "none", border: `1px solid ${T.borderRCmdBtn}`, borderRadius: 6, padding: "4px 12px", color: T.textRCmd, cursor: "pointer", fontSize: 11.5 }}>
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
       {/* -- R command block */}
-      <pre style={{ margin: 0, padding: "14px 16px", background: "rgba(8,7,5,0.9)", borderRadius: 10, borderLeft: "3px solid rgba(70,130,80,0.28)", fontSize: 12.5, lineHeight: 1.75, color: "#a8ccb0", fontFamily: "'JetBrains Mono',monospace", whiteSpace: "pre-wrap", wordBreak: "break-word", overflowX: "auto" }}>
+      <pre style={{ margin: 0, padding: "14px 16px", background: T.bgCode, borderRadius: 10, borderLeft: `3px solid ${T.borderRCmd}`, fontSize: 12.5, lineHeight: 1.75, color: T.textCodeR, fontFamily: "'JetBrains Mono',monospace", whiteSpace: "pre-wrap", wordBreak: "break-word", overflowX: "auto" }}>
         {cmd}
       </pre>
     </div>
@@ -1174,7 +1217,7 @@ function RCmdBuilder({ tags }) {
 }
 
 // ─── COMMAND BUILDER ──────────────────────────────────────────────────────
-function CmdBuilder({ tags, choices, apiKey }) {
+function CmdBuilder({ tags, choices, apiKey, T }) {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -1360,12 +1403,12 @@ Format: command with comments, ⚠️ warnings, 📋 next steps. SLURM: full sba
       }}>{loading ? "⏳ Building..." : "⚡ Generate My PyRate Command"}</button>
       {result && (
         <div style={{ marginTop: 24 }}>
-          <div style={{ background: "rgba(8,7,5,0.9)", borderRadius: 14, padding: 22, border: "1px solid rgba(120,90,60,0.15)", position: "relative" }}>
+          <div style={{ background: T.bgCode, borderRadius: 14, padding: 22, border: `1px solid ${T.borderMd}`, position: "relative" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-              <span style={{ fontSize: 11, color: "#5a4e3a", textTransform: "uppercase", letterSpacing: "0.08em" }}>Your Command</span>
-              <button onClick={() => navigator.clipboard?.writeText(result)} style={{ background: "rgba(120,90,60,0.12)", border: "1px solid rgba(120,90,60,0.2)", borderRadius: 6, padding: "4px 12px", color: "#907a60", cursor: "pointer", fontSize: 12 }}>📋 Copy</button>
+              <span style={{ fontSize: 11, color: T.textMuted, textTransform: "uppercase", letterSpacing: "0.08em" }}>Your Command</span>
+              <button onClick={() => navigator.clipboard?.writeText(result)} style={{ background: T.bgCardHv, border: `1px solid ${T.borderInput}`, borderRadius: 6, padding: "4px 12px", color: T.textLabel, cursor: "pointer", fontSize: 12 }}>📋 Copy</button>
             </div>
-            <pre style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12.5, lineHeight: 1.75, color: "#d0c4b0", whiteSpace: "pre-wrap", wordBreak: "break-word", margin: 0 }}>{result}</pre>
+            <pre style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12.5, lineHeight: 1.75, color: T.textCodePre, whiteSpace: "pre-wrap", wordBreak: "break-word", margin: 0 }}>{result}</pre>
           </div>
         </div>
       )}
@@ -1381,6 +1424,8 @@ export default function PyRateWizard() {
   const [choices, setChoices] = useState([]);
   const [showTech, setShowTech] = useState(false);
   const [apiKey, setApiKey] = useState(() => localStorage.getItem("pyrate_api_key") || "");
+  const [lightTheme, setLightTheme] = useState(false);
+  const T = lightTheme ? LIGHT : DARK;
 
   const node = TREE[cur];
   const td = KB[node.topic];
@@ -1404,59 +1449,69 @@ export default function PyRateWizard() {
   const reset = () => { setCur("start"); setHist([]); setTags([]); setChoices([]); setShowTech(false); };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#151210", color: "#d8ccb8", fontFamily: "'DM Sans',sans-serif" }}>
+    <div className={lightTheme ? "light" : "dark"} style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "'DM Sans',sans-serif" }}>
       <style>{`
         @keyframes fu { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
         @keyframes sr { from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)} }
         .ob:hover{background:rgba(120,90,60,0.1)!important;border-color:rgba(120,90,60,0.35)!important}
         .ob{transition:all .2s ease!important}
         ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(120,90,60,0.18);border-radius:3px}
-        .explain-md p{margin:0 0 9px;line-height:1.7}
-        .explain-md h2{font-family:'Source Serif 4',Georgia,serif;font-size:14px;font-weight:600;color:#c8baa4;margin:14px 0 5px;letter-spacing:-0.01em}
-        .explain-md h3{font-family:'Source Serif 4',Georgia,serif;font-size:13px;font-weight:600;color:#b8a894;margin:12px 0 4px}
-        .explain-md ul{padding-left:18px;margin:4px 0 10px}
-        .explain-md li{margin-bottom:4px;line-height:1.65}
-        .explain-md code{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#7a98a8;background:rgba(70,90,110,0.14);padding:1px 5px;border-radius:4px}
-        .explain-md pre{background:rgba(8,7,5,0.85);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:8px 0 12px;border-left:3px solid rgba(70,90,110,0.25)}
-        .explain-md pre code{background:none;padding:0;color:#a8bccc;font-size:12px;line-height:1.65}
-        .explain-md a{color:#8a98a8;text-decoration:underline;text-decoration-color:rgba(138,152,168,0.4)}
-        .explain-md a:hover{color:#a8bccc}
-        .explain-md strong{color:#c0b098;font-weight:600}
+        .dark .explain-md p,.light .explain-md p{margin:0 0 9px;line-height:1.7}
+        .dark .explain-md ul,.light .explain-md ul{padding-left:18px;margin:4px 0 10px}
+        .dark .explain-md li,.light .explain-md li{margin-bottom:4px;line-height:1.65}
+        .dark .explain-md h2{font-family:'Source Serif 4',Georgia,serif;font-size:14px;font-weight:600;color:#c8baa4;margin:14px 0 5px;letter-spacing:-0.01em}
+        .dark .explain-md h3{font-family:'Source Serif 4',Georgia,serif;font-size:13px;font-weight:600;color:#b8a894;margin:12px 0 4px}
+        .dark .explain-md code{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#7a98a8;background:rgba(70,90,110,0.14);padding:1px 5px;border-radius:4px}
+        .dark .explain-md pre{background:rgba(8,7,5,0.85);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:8px 0 12px;border-left:3px solid rgba(70,90,110,0.25)}
+        .dark .explain-md pre code{background:none;padding:0;color:#a8bccc;font-size:12px;line-height:1.65}
+        .dark .explain-md a{color:#8a98a8;text-decoration:underline;text-decoration-color:rgba(138,152,168,0.4)}
+        .dark .explain-md a:hover{color:#a8bccc}
+        .dark .explain-md strong{color:#c0b098;font-weight:600}
+        .light .explain-md h2{font-family:'Source Serif 4',Georgia,serif;font-size:14px;font-weight:600;color:#4a3828;margin:14px 0 5px;letter-spacing:-0.01em}
+        .light .explain-md h3{font-family:'Source Serif 4',Georgia,serif;font-size:13px;font-weight:600;color:#5a4838;margin:12px 0 4px}
+        .light .explain-md code{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#2a5a6a;background:rgba(60,80,100,0.1);padding:1px 5px;border-radius:4px}
+        .light .explain-md pre{background:rgba(215,208,195,0.9);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:8px 0 12px;border-left:3px solid rgba(50,70,90,0.3)}
+        .light .explain-md pre code{background:none;padding:0;color:#2a4a5a;font-size:12px;line-height:1.65}
+        .light .explain-md a{color:#4a6878;text-decoration:underline;text-decoration-color:rgba(74,104,120,0.4)}
+        .light .explain-md a:hover{color:#2a5a6a}
+        .light .explain-md strong{color:#4a3828;font-weight:600}
       `}</style>
       {/* Header */}
-      <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid rgba(120,90,60,0.08)", background: "rgba(20,17,14,0.95)" }}>
+      <div style={{ padding: "22px 24px 16px", borderBottom: `1px solid ${T.border}`, background: T.bgHeader }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
-            <h1 style={{ margin: 0, fontSize: 21, fontWeight: 700, color: "#ddd0c0", fontFamily: "'Source Serif 4',Georgia,serif" }}>🦴 PyRate Wizard</h1>
-            <p style={{ margin: "3px 0 0", fontSize: 13, color: "#5a4e3a" }}>Guided setup for fossil diversification analysis</p>
+            <h1 style={{ margin: 0, fontSize: 21, fontWeight: 700, color: T.textH, fontFamily: "'Source Serif 4',Georgia,serif" }}>🦴 PyRate Wizard</h1>
+            <p style={{ margin: "3px 0 0", fontSize: 13, color: T.textMuted }}>Guided setup for fossil diversification analysis</p>
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            {hist.length > 0 && <button onClick={back} style={{ background: "rgba(120,90,60,0.06)", border: "1px solid rgba(120,90,60,0.15)", borderRadius: 7, padding: "6px 13px", color: "#907a60", cursor: "pointer", fontSize: 13 }}>← Back</button>}
-            {hist.length > 1 && <button onClick={reset} style={{ background: "none", border: "1px solid rgba(120,90,60,0.1)", borderRadius: 7, padding: "6px 13px", color: "#4a4030", cursor: "pointer", fontSize: 13 }}>Start over</button>}
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            {/* -- Theme toggle */}
+            <button onClick={() => setLightTheme(l => !l)} title={`Switch to ${T.themeLabel} theme`} style={{ background: T.bgCardHv, border: `1px solid ${T.borderCard}`, borderRadius: 7, padding: "6px 11px", color: T.textLabel, cursor: "pointer", fontSize: 13 }}>{T.themeIcon}</button>
+            {hist.length > 0 && <button onClick={back} style={{ background: T.bgCard, border: `1px solid ${T.borderMd}`, borderRadius: 7, padding: "6px 13px", color: T.textLabel, cursor: "pointer", fontSize: 13 }}>← Back</button>}
+            {hist.length > 1 && <button onClick={reset} style={{ background: "none", border: `1px solid ${T.border}`, borderRadius: 7, padding: "6px 13px", color: T.textFaint, cursor: "pointer", fontSize: 13 }}>Start over</button>}
           </div>
         </div>
         <div style={{ display: "flex", gap: 2, marginTop: 12 }}>
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} style={{ flex: 1, height: 2, borderRadius: 1, background: i < hist.length ? "rgba(170,130,80,0.55)" : "rgba(120,90,60,0.08)", transition: "background .4s" }} />
+            <div key={i} style={{ flex: 1, height: 2, borderRadius: 1, background: i < hist.length ? T.progActive : T.progInactive, transition: "background .4s" }} />
           ))}
         </div>
       </div>
       {/* Breadcrumb */}
       {choices.length > 0 && (
-        <div style={{ padding: "9px 24px", borderBottom: "1px solid rgba(120,90,60,0.05)", overflowX: "auto", whiteSpace: "nowrap" }}>
-          {choices.map((c, i) => <span key={i} style={{ fontSize: 11.5, color: "#5a4e3a" }}>{c.choice}{i < choices.length - 1 && <span style={{ margin: "0 5px", opacity: .3 }}>›</span>}</span>)}
+        <div style={{ padding: "9px 24px", borderBottom: `1px solid ${T.border}`, overflowX: "auto", whiteSpace: "nowrap" }}>
+          {choices.map((c, i) => <span key={i} style={{ fontSize: 11.5, color: T.textMuted }}>{c.choice}{i < choices.length - 1 && <span style={{ margin: "0 5px", opacity: .3 }}>›</span>}</span>)}
         </div>
       )}
       {/* Content */}
       <div style={{ padding: "26px 24px 44px", maxWidth: 760, margin: "0 auto", animation: "fu .3s ease" }} key={cur}>
-        <h2 style={{ fontSize: 20, fontWeight: 600, margin: "0 0 5px", color: "#ddd0c0", lineHeight: 1.35, fontFamily: "'Source Serif 4',Georgia,serif" }}>{node.question}</h2>
-        {node.subtitle && <p style={{ fontSize: 13.5, color: "#7a6e58", margin: "0 0 18px", lineHeight: 1.55 }}>{node.subtitle}</p>}
+        <h2 style={{ fontSize: 20, fontWeight: 600, margin: "0 0 5px", color: T.textH, lineHeight: 1.35, fontFamily: "'Source Serif 4',Georgia,serif" }}>{node.question}</h2>
+        {node.subtitle && <p style={{ fontSize: 13.5, color: T.textMid, margin: "0 0 18px", lineHeight: 1.55 }}>{node.subtitle}</p>}
         {/* Explanation */}
         {node.explain && (
-          <div style={{ padding: "14px 16px", marginBottom: 18, background: "rgba(120,90,60,0.04)", borderRadius: 11, borderLeft: "3px solid rgba(160,120,70,0.25)", fontSize: 13.5, lineHeight: 1.7, color: "#a89878" }}>
+          <div style={{ padding: "14px 16px", marginBottom: 18, background: T.bgCardMd, borderRadius: 11, borderLeft: `3px solid ${T.borderAccent}`, fontSize: 13.5, lineHeight: 1.7, color: T.textAccent }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 7 }}>
               <span style={{ fontSize: 13 }}>💡</span>
-              <span style={{ fontWeight: 600, fontSize: 11, color: "#907a60", textTransform: "uppercase", letterSpacing: ".05em" }}>What you should know</span>
+              <span style={{ fontWeight: 600, fontSize: 11, color: T.textLabel, textTransform: "uppercase", letterSpacing: ".05em" }}>What you should know</span>
             </div>
             <MiniMarkdown>{node.explain}</MiniMarkdown>
           </div>
@@ -1464,32 +1519,32 @@ export default function PyRateWizard() {
         {/* Tech toggle */}
         {td && (
           <div style={{ marginBottom: 14 }}>
-            <button onClick={() => setShowTech(!showTech)} style={{ background: "none", border: "1px solid rgba(80,100,120,0.15)", borderRadius: 7, padding: "6px 13px", color: "#6a8898", cursor: "pointer", fontSize: 12, display: "flex", alignItems: "center", gap: 5 }}>
+            <button onClick={() => setShowTech(!showTech)} style={{ background: "none", border: `1px solid ${T.borderTechBtn}`, borderRadius: 7, padding: "6px 13px", color: T.textCode, cursor: "pointer", fontSize: 12, display: "flex", alignItems: "center", gap: 5 }}>
               <span style={{ fontSize: 11 }}>{showTech ? "▾" : "▸"}</span>{showTech ? "Hide" : "Show"} technical details & flags
             </button>
-            {showTech && <pre style={{ marginTop: 8, padding: 14, background: "rgba(70,90,110,0.04)", borderRadius: 9, borderLeft: "3px solid rgba(70,90,110,0.18)", fontSize: 12, lineHeight: 1.6, color: "#7a98a8", fontFamily: "'JetBrains Mono',monospace", whiteSpace: "pre-wrap", wordBreak: "break-word", maxHeight: 260, overflowY: "auto" }}>{td.technical}</pre>}
+            {showTech && <pre style={{ marginTop: 8, padding: 14, background: T.bgTech, borderRadius: 9, borderLeft: `3px solid ${T.borderTech}`, fontSize: 12, lineHeight: 1.6, color: T.textCode, fontFamily: "'JetBrains Mono',monospace", whiteSpace: "pre-wrap", wordBreak: "break-word", maxHeight: 260, overflowY: "auto" }}>{td.technical}</pre>}
           </div>
         )}
         {/* Chat */}
-        <div style={{ marginBottom: 22 }}><Chat topic={node.topic} allTags={tags} choices={choices} apiKey={apiKey} setApiKey={setApiKey} /></div>
+        <div style={{ marginBottom: 22 }}><Chat topic={node.topic} allTags={tags} choices={choices} apiKey={apiKey} setApiKey={setApiKey} T={T} /></div>
         {/* Options or Builder */}
-        {node.terminal ? <CmdBuilder tags={tags} choices={choices} apiKey={apiKey} /> : (
+        {node.terminal ? <CmdBuilder tags={tags} choices={choices} apiKey={apiKey} T={T} /> : (
           <>
             {/* -- R command block for data prep step */}
-            {node.r_cmd && <RCmdBuilder tags={tags} />}
+            {node.r_cmd && <RCmdBuilder tags={tags} T={T} />}
             <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
               {node.options.map((o, i) => (
                 <button key={i} className="ob" onClick={() => pick(o)} style={{
-                  background: "rgba(120,90,60,0.03)", border: "1px solid rgba(120,90,60,0.1)", borderRadius: 11,
+                  background: T.bgCard, border: `1px solid ${T.borderCard}`, borderRadius: 11,
                   padding: "14px 16px", cursor: "pointer", textAlign: "left",
                   display: "flex", alignItems: "flex-start", gap: 12, animation: `sr .25s ease ${i * .04}s both`
                 }}>
                   <span style={{ fontSize: 18, lineHeight: 1, flexShrink: 0, marginTop: 1 }}>{o.icon || "→"}</span>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 14, color: "#c8baa4", lineHeight: 1.5 }}>{o.label}</div>
-                    {o.hint && <div style={{ fontSize: 12, color: "#5e5240", marginTop: 3, lineHeight: 1.35 }}>{o.hint}</div>}
+                    <div style={{ fontSize: 14, color: T.textBody, lineHeight: 1.5 }}>{o.label}</div>
+                    {o.hint && <div style={{ fontSize: 12, color: T.textHint, marginTop: 3, lineHeight: 1.35 }}>{o.hint}</div>}
                   </div>
-                  <span style={{ color: "#3a3428", fontSize: 15, marginTop: 2, flexShrink: 0 }}>›</span>
+                  <span style={{ color: T.textArrow, fontSize: 15, marginTop: 2, flexShrink: 0 }}>›</span>
                 </button>
               ))}
             </div>
@@ -1497,9 +1552,9 @@ export default function PyRateWizard() {
         )}
       </div>
       {/* Footer */}
-      <div style={{ padding: "24px 24px", textAlign: "center", borderTop: "1px solid rgba(120,90,60,0.08)", fontSize: 12, color: "#5a4e3a", lineHeight: 1.7 }}>
+      <div style={{ padding: "24px 24px", textAlign: "center", borderTop: `1px solid ${T.border}`, fontSize: 12, color: T.textMuted, lineHeight: 1.7 }}>
         PyRate is developed by Dr. Daniele Silvestro and Dr. Torsten Hauffe.<br />
-        To submit questions or issues about this site, please email <a href="mailto:ShelleyLWang@gmail.com" style={{ color: "#7a6e58", textDecoration: "underline" }}>ShelleyLWang@gmail.com</a>.
+        To submit questions or issues about this site, please email <a href="mailto:ShelleyLWang@gmail.com" style={{ color: T.textMid, textDecoration: "underline" }}>ShelleyLWang@gmail.com</a>.
       </div>
     </div>
   );
