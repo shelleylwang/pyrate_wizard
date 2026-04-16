@@ -836,7 +836,7 @@ const DARK = {
   borderChatMsg: "rgba(100,120,140,0.25)", borderRCmd: "rgba(70,130,80,0.28)",
   borderRCmdBtn: "rgba(70,130,80,0.22)",
   progActive: "rgba(170,130,80,0.55)", progInactive: "rgba(120,90,60,0.08)",
-  themeIcon: "☀️", themeLabel: "Light",
+  themeIcon: "☀️ Light Mode", themeLabel: "Light",
 };
 const LIGHT = {
   bg: "#f4efe6", bgHeader: "rgba(240,234,222,0.97)", bgChat: "rgba(232,225,212,0.9)",
@@ -856,7 +856,7 @@ const LIGHT = {
   borderChatMsg: "rgba(80,100,120,0.35)", borderRCmd: "rgba(50,110,60,0.4)",
   borderRCmdBtn: "rgba(50,110,60,0.35)",
   progActive: "rgba(160,120,60,0.65)", progInactive: "rgba(120,90,60,0.18)",
-  themeIcon: "🌙", themeLabel: "Dark",
+  themeIcon: "🌙 Dark Mode", themeLabel: "Dark",
 };
 
 // ─── MARKDOWN RENDERER ───────────────────────────────────────────────────
@@ -1097,7 +1097,7 @@ ${notes || ""}`;
       background: "none", border: `1px solid ${T.borderMd}`, borderRadius: 10,
       padding: "10px 18px", color: T.textMid, cursor: "pointer", fontSize: 13,
       fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: 8, width: "100%", justifyContent: "center"
-    }}>💬 Have a question? Ask Claude for more detail</button>
+    }}>💬 Have a question? Ask Claude (Sonnet 4.6, trained on PyRate notes!) for more detail</button>
   );
 
   // -- Key setup screen
