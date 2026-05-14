@@ -84,7 +84,7 @@ python PyRate.py path/to/*_PyRate.py -data_info | tee data_summary.txt
     plain: `PyRate is a Python program, so you need Python 3.10 or higher on your machine before anything else. A virtual environment is just a dedicated folder where PyRate's files will live, separated from everything else on your computer. After creating it, you install PyRate's dependencies (extra Python tools it needs) and you're ready to run analyses.`,
     technical: `# Check Python version (need 3.10+)
 python --version
-# (try python3 --version if the above gives an error)
+# (try python3 --version or py --version if the above gives an error)
 
 # ─── Create virtual environment ───
 # Mac/Linux:
@@ -96,9 +96,10 @@ py -m venv C:\\pyrate_env
 # (pyrate_env) in your prompt = environment is active
 
 # ─── Install dependencies ───
+# For Windows, replace "python" with "py" in the commands below
 python -m ensurepip --upgrade
 python -m pip install --upgrade pip
-python -m pip install -r your_path/PyRate-master/requirements.txt
+python -m pip install -r your_path/PyRate-master/requirements.txt # If this command leads to an error involving numpy, try removing the "nlopt" dependency from requirements.txt. An active issue is open in the PyRate repository to fix this
 
 # ─── Test ───
 python your_path/PyRate-master/PyRate.py -v
@@ -114,7 +115,36 @@ python your_path/PyRate-master/PyRate.py -v
 # Mac:   brew install swig && brew install curl
 # Linux: sudo apt-get install swig && sudo apt-get install curl
 cd your_path/PyRate-master/pyrate_lib/fastPyRateC/ModulePyrateC
-bash install.sh   # automated install (Mac/Linux)`
+bash install.sh   # automated install (Mac/Linux only)
+
+# ─── Manual install (all OSs, required for Windows) ───
+# Install SWIG first: https://www.swig.org/download.html (Windows)
+cd your_path/PyRate-master/pyrate_lib/fastPyRateC/ModulePyrateC
+
+# Download Boost C++ library
+curl https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.zip -L -o boost_1_82_0.zip
+
+unzip boost_1_82_0.zip          # unzip inside ModulePyrateC
+mv boost_1_82_0/boost .         # move boost subfolder here
+
+# Optional cleanup
+rm boost_1_82_0.zip
+rm -r boost_1_82_0
+
+# Create C++/Python interface (produces FastPyRateC.py + FastPyRateC_wrap.cxx)
+swig -c++ -python FastPyRateC.i
+
+python setup.py build           # compile the library
+
+# Remove files no longer needed
+rm -r boost FastPyRateC.py FastPyRateC_wrap.cxx
+rm -r build
+
+# Rename compiled file from e.g. _FastPyRateC.cpython-311-x86_64-linux-gnu.so
+# to _FastPyRateC.so, then copy into the right OS subfolder:
+#   Linux:   your_PyRate_directory/pyrate_lib/fastPyRateC/Other/
+#   macOS:   your_PyRate_directory/pyrate_lib/fastPyRateC/macOS/
+#   Windows: your_PyRate_directory/pyrate_lib/fastPyRateC/Windows/`
   }
 };
 
@@ -650,7 +680,7 @@ python --version
 
 If you see something like \`Python 3.11.2\`, you're all set. If nothing comes up, or the version number is below 3.10, visit [python.org](https://www.python.org/downloads/) and download the latest version before continuing.
 
-If \`python\` gives an error, try \`python3 --version\` instead — the command name varies by installation.`,
+If \`python\` gives an error, try \`python3 --version\` or \`py --version\` instead — the command name varies by installation.`,
     options: [
       { label: "I'm on a Mac or Linux", next: "install_mac", tags: ["install_mac"], icon: "🍎" },
       { label: "I'm on Windows", next: "install_windows", tags: ["install_windows"], icon: "🪟" },
@@ -694,17 +724,19 @@ python -m pip install -r your_path/PyRate-master/requirements.txt
 
 Replace \`your_path\` with the actual location of your \`PyRate-master\` folder.
 
+If the final line leads to an error involving numpy, try opening "requirements.txt" and removing the "nlopt" dependency line. This is an open issue in the PyRate repository, and hopefully will be fixed soon. "nlopt" is only relevant if you need to use PyRateDES.py, at which point you may be able to install it my downgrading to Python 3.10, then re-installing requirements.txt 
+
 ## Step 4 — Test it
 
 \`\`\`
 python your_path/PyRate-master/PyRate.py -v
 \`\`\`
 
-If you see a version number, you're all set. If you see **"Module FastPyRateC was not found"** — don't worry, that's normal. PyRate works fine without it; it's an optional speed library you can install separately.`,
+If you see a version number, you're all set. If you see **"Module FastPyRateC was not found"** — don't worry, that's normal. PyRate works without it; it's an optional (but recommended) speed library you can install separately.`,
     options: [
       { label: "It worked — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
       { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
-      { label: "I also want to install the optional FastPyRateC speed library", next: "install_fastc", tags: ["fastc"], icon: "⚡" },
+      { label: "I also want to install the recommended FastPyRateC speed library", next: "install_fastc", tags: ["fastc"], icon: "⚡" },
     ]
   },
   install_windows: {
@@ -762,14 +794,14 @@ If you plan on making plots, also add your R \`bin\` folder, e.g. \`C:\\Program 
     options: [
       { label: "All done — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
       { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
-      { label: "I also want to install the optional FastPyRateC speed library", next: "install_fastc", tags: ["fastc"], icon: "⚡" },
+      { label: "I also want to install the recommended FastPyRateC speed library", next: "install_fastc", tags: ["fastc"], icon: "⚡" },
     ]
   },
   install_fastc: {
     id: "install_fastc", topic: "installation",
-    question: "Installing the FastPyRateC speed library (optional).",
+    question: "Installing the FastPyRateC speed library (recommended).",
     subtitle: "This is not required — PyRate runs without it. But if you plan on running many analyses, it's worth the extra setup.",
-    explain: `FastPyRateC is an optional add-on written in C++ that speeds up some of PyRate's calculations. PyRate works fine without it, but it's worth installing if you plan to run many analyses.
+    explain: `FastPyRateC is an optional add-on written in C++ that speeds up some of PyRate's calculations. PyRate works  without it, but it's worth installing if you plan to run many analyses.
 
 ## Mac / Linux
 
@@ -796,11 +828,81 @@ cd your_path/PyRate-master/pyrate_lib/fastPyRateC/ModulePyrateC
 bash install.sh
 \`\`\`
 
-This needs an internet connection and may take a few minutes. When done, run \`PyRate.py -v\` again — the "FastPyRateC not found" message should be gone.
+This needs an internet connection and may take some time. When done, cd back to your root PyRate directory (\`cd ../../../\`) run \`python PyRate.py -v\` again — the "FastPyRateC not found" message should be gone and instead it should say "Module FastPyRateC was loaded."
 
 ## Windows
 
-Windows installation requires manually compiling the C++ module. See the **technical details** panel below for the exact steps.`,
+Windows does not support the automated `install.sh` script, so you'll need to compile the module manually. These steps also work on Mac and Linux if the automated script fails.
+
+**Before you begin:** make sure you have [SWIG](https://www.swig.org/download.html) installed and on your PATH.
+
+Navigate into the FastPyRateC folder:
+
+\`\`\`
+cd your_path\\PyRate-master\\pyrate_lib\\fastPyRateC\\ModulePyrateC
+\`\`\`
+
+**Step 1 — Download the Boost C++ library:**
+
+\`\`\`
+curl https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.zip -L -o boost_1_82_0.zip
+\`\`\`
+
+**Step 2 — Unzip it inside the current folder (ModulePyRateC):**
+
+\`\`\`
+unzip boost_1_82_0.zip
+\`\`\`
+
+**Step 3 — Move the \`boost\` subfolder into the current folder:**
+
+\`\`\`
+mv boost_1_82_0/boost .
+\`\`\`
+
+**Step 4 — Remove the download files (optional):**
+
+\`\`\`
+rm boost_1_82_0.zip
+rm -r boost_1_82_0
+\`\`\`
+
+**Step 5 — Create the C++/Python interface:**
+
+\`\`\`
+swig -c++ -python FastPyRateC.i
+\`\`\`
+
+You should now see two new files in the folder: \`FastPyRateC.py\` and \`FastPyRateC_wrap.cxx\`.
+
+**Step 6 — Compile the library:**
+
+\`\`\`
+python setup.py build
+\`\`\`
+
+**Step 7 — Remove files that are no longer needed:**
+
+\`\`\`
+rm -r boost FastPyRateC.py FastPyRateC_wrap.cxx
+rm -r build
+\`\`\`
+
+**Step 8 — Rename and move the compiled library:**
+
+Inside \`.../pyrate_lib/fastPyRateC/\` you'll find a folder named \`lib.(name according to your OS)\`. Inside it is a file with a long name like:
+
+- \`_FastPyRateC.cpython-311-x86_64-linux-gnu.so\` (Linux)
+- \`_FastPyRateC.cpython-311-darwin.so\` (macOS)
+- \`_FastPyRateC.pyd\` or similar (Windows)
+
+Rename it to \`_FastPyRateC.so\` and copy it into the matching OS subfolder inside your PyRate directory:
+
+- \`your_PyRate_directory/pyrate_lib/fastPyRateC/Other/\` — any Linux OS
+- \`your_PyRate_directory/pyrate_lib/fastPyRateC/macOS/\` — macOS
+- \`your_PyRate_directory/pyrate_lib/fastPyRateC/Windows/\` — Windows
+
+When done, cd to your root PyRate directory (\`cd ../../../\`) and run \`python PyRate.py -v\`. The "FastPyRateC not found" message should be replaced by "Module FastPyRateC was loaded."`,
     options: [
       { label: "Done — I'm ready to prepare my fossil data next", next: "data_source", tags: [], icon: "📂" },
       { label: "My data is already prepared — take me to model selection", next: "goal", tags: [], icon: "🔬" },
