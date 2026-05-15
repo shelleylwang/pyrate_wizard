@@ -832,7 +832,7 @@ This needs an internet connection and may take some time. When done, cd back to 
 
 ## Windows
 
-Windows does not support the automated `install.sh` script, so you'll need to compile the module manually. These steps also work on Mac and Linux if the automated script fails.
+Windows does not support the automated \`install.sh\` script, so you'll need to compile the module manually. These steps also work on Mac and Linux if the automated script fails.
 
 **Before you begin:** make sure you have [SWIG](https://www.swig.org/download.html) installed and on your PATH.
 
